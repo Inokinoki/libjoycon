@@ -1,6 +1,8 @@
 #ifndef OUTPUT_REPORT_H
 #define OUTPUT_REPORT_H
 
+#include <stdint.h>
+
 enum OutputCommand {
     Subcommand          = 0x01,
     NFCIRFirmwareUpdate = 0x03,
@@ -47,6 +49,31 @@ enum OutputSubCommand {
 
     SetGPIOPinOut1      = 0x51,
     GetGPIOPinInOut     = 0x52
+};
+
+#pragma pack(push, 1)
+
+struct SubcommandBodyArgs {
+    uint8_t arg1;
+    uint8_t arg2;
+};
+
+struct SubcommandBodySPIData {
+    uint32_t offset;
+    uint8_t size;
+};
+
+// TODO: NFC/IR
+// TODO: IMU
+// TODO: Voltage
+// TODO: Temperature
+
+struct SubcommandBody {
+    uint8_t subcommand;
+    union {
+        struct SubcommandBodySPIData spi_data;
+        struct SubcommandBodyArgs args;
+    };
 };
 
 #endif
