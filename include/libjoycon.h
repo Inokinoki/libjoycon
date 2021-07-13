@@ -12,7 +12,7 @@ extern "C" {
 #include "features.h"
 
 #pragma pack(push, 1)
-struct header {
+struct Header {
     uint8_t command;
     uint8_t counter;
     uint8_t rumble_l[4];
