@@ -10,7 +10,7 @@ enum OutputCommand {
     NFCIRRead           = 0x11,
 };
 
-enum OutputSubCommand {
+enum OutputSubcommand {
     GetControllerState  = 0x00,
     BluetoothManPair,   // 0x01
     GetDeviceInfo,      // 0x02
