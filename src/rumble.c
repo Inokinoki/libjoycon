@@ -22,7 +22,7 @@ struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
     struct RumbleEncodedData data;
     data.data[0] = (uint8_t)(hf & 0xFF);
     data.data[1] = (uint8_t)hf_amp + ((hf >> 8) & 0xFF);
-    data.data[2] = lf + ((lf_amp >> 8) & 0xFF);
+    data.data[2] = (lf | ((encoded_hex_amp % 2) << 7));
     data.data[3] = (uint8_t)(lf_amp & 0xFF);
     return data;
 }

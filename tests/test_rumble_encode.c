@@ -70,12 +70,11 @@ int main()
     assert((test_mid_amp_data1.data[2] & LBLF_INDICATOR_MASK) == 0x00);
     assert(test_mid_amp_data1.data[3] == 0x51);
 
-    // FIXME: Thie 80 is not there
-    // struct RumbleEncodedData test_mid_amp_data2
-    //     = joycon_rumble_encode(80, 0.245345);
-    // assert((test_mid_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0x46);
-    // assert((test_mid_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
-    // assert(test_mid_amp_data2.data[3] == 0x51);
+    struct RumbleEncodedData test_mid_amp_data2
+        = joycon_rumble_encode(80, 0.245345);
+    assert((test_mid_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0x46);
+    assert((test_mid_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
+    assert(test_mid_amp_data2.data[3] == 0x51);
 
     struct RumbleEncodedData test_high_amp_data1
         = joycon_rumble_encode(80, 0.960348);
@@ -83,11 +82,11 @@ int main()
     assert((test_high_amp_data1.data[2] & LBLF_INDICATOR_MASK) == 0x00);
     assert(test_high_amp_data1.data[3] == 0x71);
 
-    // struct RumbleEncodedData test_high_amp_data2
-    //     = joycon_rumble_encode(80, 0.981379);
-    // assert((test_high_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0xC6);
-    // assert((test_high_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
-    // assert(test_high_amp_data2.data[3] == 0x71);
+    struct RumbleEncodedData test_high_amp_data2
+        = joycon_rumble_encode(80, 0.981379);
+    assert((test_high_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0xC6);
+    assert((test_high_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
+    assert(test_high_amp_data2.data[3] == 0x71);
 
     return 0;
 }
