@@ -58,7 +58,7 @@ joycon_status get_joycon_info(joycon *con, u8 *buffer);
 joycon_status get_joycon_spi_data(joycon *con, u32 offset, const u16 read_len, u8 *buffer);
 
 static float mxbc_freq[15] = {
-    261.63, 293.66, 329.63, 392, 392, 440, 329, 329.63, 261.63, 293.66, 329.63, 329.63, 293.66, 261.63, 293.66
+    261.63, 293.66, 329.63, 392, 392, 440, 392, 329.63, 261.63, 293.66, 329.63, 329.63, 293.66, 261.63, 293.66
 };
 static int mxbc_duration[15] = {
     1, 1, 2, 2, 3, 1, 2, 2, 3, 1, 2, 2, 2, 2, 4
