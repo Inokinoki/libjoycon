@@ -18,7 +18,7 @@ struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
     uint16_t hf_amp = encoded_hex_amp << 1;
     uint16_t lf_amp = (encoded_hex_amp >> 1) + 0x40;
 
-    // FIXME: Byte might have been swapped
+    // Byte has been swapped
     struct RumbleEncodedData data;
     data.data[0] = (uint8_t)(hf & 0xFF);
     data.data[1] = (uint8_t)hf_amp + ((hf >> 8) & 0xFF);
