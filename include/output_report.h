@@ -76,4 +76,7 @@ struct SubcommandBody {
     };
 };
 
+// Rumble data
+#include "rumble.h"
+
 #endif
