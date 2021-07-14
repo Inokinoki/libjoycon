@@ -50,7 +50,30 @@ int main()
     assert(test_hh_freq_data2.data[0] == 0xFC);
     assert((test_hh_freq_data2.data[1] & HBHF_INDICATOR_MASK) == 0x01);
 
-    // TODO: Test amplititude
+    // Test amplititude
+    struct RumbleEncodedData test_low_amp_data1
+        = joycon_rumble_encode(80, 0);
+    assert((test_low_amp_data1.data[1] & HBHF_AMPLITUDE_MASK) == 0x00);
+    assert((test_low_amp_data1.data[2] & LBLF_INDICATOR_MASK) == 0x00);
+    assert(test_low_amp_data1.data[3] == 0x40);
+
+    struct RumbleEncodedData test_low_amp_data2
+        = joycon_rumble_encode(80, 0.007843);
+    assert((test_low_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0x02);
+    assert((test_low_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
+    assert(test_low_amp_data2.data[3] == 0x40);
+
+    struct RumbleEncodedData test_high_amp_data1
+        = joycon_rumble_encode(80, 0.960348);
+    assert((test_high_amp_data1.data[1] & HBHF_AMPLITUDE_MASK) == 0xC4);
+    assert((test_high_amp_data1.data[2] & LBLF_INDICATOR_MASK) == 0x00);
+    assert(test_high_amp_data1.data[3] == 0x71);
+
+    struct RumbleEncodedData test_high_amp_data2
+        = joycon_rumble_encode(80, 0.981379);
+    assert((test_high_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0xC6);
+    assert((test_high_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
+    assert(test_high_amp_data2.data[3] == 0x71);
 
     return 0;
 }
