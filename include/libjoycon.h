@@ -15,8 +15,8 @@ extern "C" {
 struct Header {
     uint8_t command;
     uint8_t counter;
-    uint8_t rumble_l[4];
-    uint8_t rumble_r[4];
+    struct RumbleEncodedData rumble_l;
+    struct RumbleEncodedData rumble_r;
 };  // 10 bytes
 
 #ifdef __cplusplus
