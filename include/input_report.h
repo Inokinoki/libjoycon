@@ -55,4 +55,10 @@ struct GetRegulatedVoltageReply {
     uint8_t high;
 };
 
+struct JoyconColorReply {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+};
+
 #endif
