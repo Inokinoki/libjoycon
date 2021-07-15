@@ -68,9 +68,7 @@ struct SubcommandBodySPIData {
 };
 
 // TODO: NFC/IR
-// TODO: IMU
 // TODO: Voltage
-// TODO: Temperature
 
 struct SubcommandBody {
     uint8_t subcommand;
@@ -86,6 +84,7 @@ struct SubcommandBody {
 // SPI data
 #include "spi.h"
 
+// TODO: IMU
 // IMU data
 #include "imu.h"
 
