@@ -83,4 +83,7 @@ struct SubcommandBody {
 // Rumble data
 #include "rumble.h"
 
+// SPI data
+#include "spi.h"
+
 #endif
