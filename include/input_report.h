@@ -49,4 +49,10 @@ struct InputReportIMUNFCIR {
 // IMU data
 #include "imu.h"
 
+// Replies
+struct GetRegulatedVoltageReply {
+    uint8_t low;
+    uint8_t high;
+};
+
 #endif
