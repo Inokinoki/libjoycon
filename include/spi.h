@@ -2,6 +2,7 @@
 #define SPI_H
 
 #include "output_report.h"
+#include "input_report.h"
 
 /*
 Initial PatchRAM 	    x0000 	x1000 	Stores static data like BT address, OTA DS 1 offset, etc
