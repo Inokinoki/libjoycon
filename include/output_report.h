@@ -88,4 +88,7 @@ struct SubcommandBody {
 // IMU data
 #include "imu.h"
 
+// Player and home light
+#include "light.h"
+
 #endif
