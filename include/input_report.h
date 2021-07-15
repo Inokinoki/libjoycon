@@ -25,13 +25,10 @@ struct InputReportHeader {
     uint8_t vibrator_input_report;
 };  // 13 bytes
 
-#include "output_report.h"
-
 struct InputReportSubcommandReply {
     uint8_t ack;
     uint8_t replied_subcommmand_id;
-    struct SubcommandBodySPIData spi_data;
-    uint8_t data[30];
+    uint8_t data[35];
 };
 
 struct InputReportNFCIRFWUpdate {
