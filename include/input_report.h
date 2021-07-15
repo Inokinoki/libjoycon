@@ -13,4 +13,7 @@ enum InputCommand {
     SIRUnknown2        // 0x33
 };
 
+// IMU data
+#include "imu.h"
+
 #endif

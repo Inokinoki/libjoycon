@@ -86,4 +86,7 @@ struct SubcommandBody {
 // SPI data
 #include "spi.h"
 
+// IMU data
+#include "imu.h"
+
 #endif
