@@ -76,14 +76,14 @@ int send_rumble() {
     hdr->counter = timming_byte & 0xF;
     timming_byte++;
     pkt->subcommand = EnableVibration;
-    pkt->args.arg1 = 0x01;
+    pkt->args.arg1 = VIBRATION_ENABLE;
     res = hid_write(handle, buf, sizeof(buf));
 
     // New vibration like switch
     for (int i = 0; i < 15; i++)
     {
         memset(buf, 0, sizeof(buf));
-        hdr->command = 0x01;
+        hdr->command = Subcommand;
         hdr->counter = timming_byte & 0xF;
         timming_byte++;
         hdr->rumble_l = joycon_rumble_encode(mxbc_freq[i], 0.5);
@@ -102,7 +102,7 @@ int send_rumble() {
     hdr->rumble_l = joycon_rumble_encode(0, 0);
     memcpy(hdr->rumble_r.data, hdr->rumble_l.data, sizeof(hdr->rumble_l));
     pkt->subcommand = EnableVibration;
-    pkt->args.arg1 = 0x00;
+    pkt->args.arg1 = VIBRATION_DISABLE;
     res = hid_write(handle, buf, sizeof(buf));
 
     return 0;

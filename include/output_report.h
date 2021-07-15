@@ -58,6 +58,10 @@ struct SubcommandBodyArgs {
     uint8_t arg2;
 };
 
+// Subcommand arguments
+#define VIBRATION_ENABLE    1
+#define VIBRATION_DISABLE   0
+
 struct SubcommandBodySPIData {
     uint32_t offset;
     uint8_t size;
