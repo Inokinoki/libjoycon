@@ -61,4 +61,8 @@ struct JoyconColorReply {
     uint8_t b;
 };
 
+struct IMUPackedDataReply {
+    struct IMUPackedData data[3];
+}
+
 #endif
