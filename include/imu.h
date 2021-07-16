@@ -45,6 +45,23 @@ struct IMUPackedData {
     } gyro_3;
 };
 
-// TODO: Add decoder
+// Add decoder
+#define SENSITIVITY_ACCELEROMETER_2  0.000061f
+#define SENSITIVITY_ACCELEROMETER_4  0.000122f
+#define SENSITIVITY_ACCELEROMETER_8  0.000244f
+#define SENSITIVITY_ACCELEROMETER_16 0.000732f
+#define SENSITIVITY_GYROSCOPE_245    0.00875f
+#define SENSITIVITY_GYROSCOPE_500    0.0175f
+#define SENSITIVITY_GYROSCOPE_2000   0.07f
+
+enum IMUSensitivity {
+    Sensitivity0 = 0x00,
+    Sensitivity1,
+    Sensitivity2,
+    Sensitivity3
+};
+
+float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity);
+float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity);
 
 #endif

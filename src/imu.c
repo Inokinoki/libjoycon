@@ -1,4 +1,4 @@
-#include <imu.h>
+#include <libjoycon.h>
 
 float joycon_temperature_decode(unsigned char *temp_info, enum IMUTemperatureUnit unit)
 {
@@ -8,4 +8,34 @@ float joycon_temperature_decode(unsigned char *temp_info, enum IMUTemperatureUni
     if (unit == IMU_TEMP_C) return temperature_c;
     if (unit == IMU_TEMP_F) return temperature_c * 1.8f + 32;
     if (unit == IMU_TEMP_K) return temperature_c + 273.15f;
+}
+
+float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity)
+{
+    switch (sensitivity)
+    {
+    case Sensitivity0:
+        return SENSITIVITY_ACCELEROMETER_8 * data;
+    case Sensitivity1:
+        return SENSITIVITY_ACCELEROMETER_4 * data;
+    case Sensitivity2:
+        return SENSITIVITY_ACCELEROMETER_2 * data;
+    case Sensitivity3:
+    default:
+        return SENSITIVITY_ACCELEROMETER_16 * data;
+    }
+}
+
+float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity)
+{
+    switch (sensitivity)
+    {
+    case Sensitivity0:
+        return SENSITIVITY_GYROSCOPE_245 * data;
+    case Sensitivity1:
+        return SENSITIVITY_GYROSCOPE_500 * data;
+    case Sensitivity3:
+    default:
+        return SENSITIVITY_GYROSCOPE_2000 * data;
+    }
 }
