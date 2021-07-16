@@ -86,6 +86,8 @@ struct SubcommandBody {
 
 // TODO: IMU
 // IMU data
+#define IMU_ENABLE    1
+#define IMU_DISABLE   0
 #include "imu.h"
 
 // Player and home light
