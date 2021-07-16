@@ -155,10 +155,9 @@ int main()
 
     fprintf(stderr, "Ack:\t0x%02X\n", reply->ack);
     fprintf(stderr, "SCID:\t0x%02X\n", reply->replied_subcommmand_id);
-    struct SubcommandBodySPIData *spi_data = (struct SubcommandBodySPIData *)reply->data;
-    struct JoyconColorReply *data = (struct JoyconColorReply *)(reply->data + sizeof(struct SubcommandBodySPIData));
-    fprintf(stderr, "ADDR:\t0x%08X LEN:\t0x%02X\n", spi_data->offset, spi_data->size);
-    fprintf(stderr, "R: 0x%02X G: 0x%02X B: 0x%02X\n", data->r, data->g, data->b);
+    struct SubcommandBodySPIColorData *data = (struct SubcommandBodySPIColorData *)reply->data;
+    fprintf(stderr, "ADDR:\t0x%08X LEN:\t0x%02X\n", data->data.offset, data->data.size);
+    fprintf(stderr, "R: 0x%02X G: 0x%02X B: 0x%02X\n", data->color.r, data->color.g, data->color.b);
 
     hdr->command = Subcommand;
     hdr->counter = timming_byte & 0xF;
@@ -176,10 +175,9 @@ int main()
 
     fprintf(stderr, "Ack:\t0x%02X\n", reply->ack);
     fprintf(stderr, "SCID:\t0x%02X\n", reply->replied_subcommmand_id);
-    spi_data = (struct SubcommandBodySPIData *)reply->data;
-    data = (struct JoyconColorReply *)(reply->data + sizeof(struct SubcommandBodySPIData));
-    fprintf(stderr, "ADDR:\t0x%08X LEN:\t0x%02X\n", spi_data->offset, spi_data->size);
-    fprintf(stderr, "R: 0x%02X G: 0x%02X B: 0x%02X\n", data->r, data->g, data->b);
+    data = (struct SubcommandBodySPIColorData *)reply->data;
+    fprintf(stderr, "ADDR:\t0x%08X LEN:\t0x%02X\n", data->data.offset, data->data.size);
+    fprintf(stderr, "R: 0x%02X G: 0x%02X B: 0x%02X\n", data->color.r, data->color.g, data->color.b);
 
     return 0;
 }

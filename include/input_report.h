@@ -61,8 +61,19 @@ struct JoyconColorReply {
     uint8_t b;
 };
 
+struct SubcommandBodySPIColorData {
+    struct SubcommandBodySPIData data;
+    struct JoyconColorReply color;
+};
+
+struct SubcommandBodySPI2ColorsData {
+    struct SubcommandBodySPIData data;
+    struct JoyconColorReply body_color;
+    struct JoyconColorReply button_color;
+};
+
 struct IMUPackedDataReply {
     struct IMUPackedData data[3];
-}
+};
 
 #endif
