@@ -64,4 +64,7 @@ enum IMUSensitivity {
 float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity);
 float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity);
 
+float joycon_gyro_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity sensitivity);
+float joycon_accel_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity sensitivity);
+
 #endif

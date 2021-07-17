@@ -39,3 +39,12 @@ float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity)
         return SENSITIVITY_GYROSCOPE_2000 * data;
     }
 }
+
+float joycon_gyro_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity sensitivity)
+{
+    return joycon_gyro_decode((unit.high << 8) | unit.low, sensitivity);
+}
+float joycon_accel_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity sensitivity)
+{
+    return joycon_accel_decode((unit.high << 8) | unit.low, sensitivity);
+}
