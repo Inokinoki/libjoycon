@@ -1,4 +1,4 @@
-#include <spi.h>
+#include <libjoycon.h>
 
 struct SubcommandBodySPIData joycon_spi_read_sn_encode()
 {
