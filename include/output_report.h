@@ -52,6 +52,12 @@ enum OutputSubcommand {
 };
 
 #pragma pack(push, 1)
+struct Header {
+    uint8_t command;
+    uint8_t counter;
+    struct RumbleEncodedData rumble_l;
+    struct RumbleEncodedData rumble_r;
+};  // 10 bytes
 
 struct SubcommandBodyArgs {
     uint8_t arg1;
