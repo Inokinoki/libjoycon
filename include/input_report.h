@@ -20,14 +20,20 @@ struct SIRButtonStatus {
     uint8_t left;
 };
 
+struct SIRStickStatus {
+    uint8_t horizontal_low;
+    uint8_t share;
+    uint8_t vertical_high;
+};
+
 struct InputReportHeader {
     uint8_t id;
     uint8_t timer;
     uint8_t battery_level: 4;
     uint8_t conn_info: 4;
     struct SIRButtonStatus btn_status;
-    uint8_t left_stick_status[3];   // TODO: Replace with a struct
-    uint8_t right_stick_status[3];  // TODO: Replace with a struct
+    struct SIRStickStatus left_stick_status;
+    struct SIRStickStatus right_stick_status;
     uint8_t vibrator_input_report;
 };  // 13 bytes
 
@@ -107,5 +113,14 @@ struct SubcommandBodySPI2ColorsData {
 struct IMUPackedDataReply {
     struct IMUPackedData data[3];
 };
+
+struct StickStatus {
+    uint16_t horizontal;
+    uint16_t vertical;
+};
+
+struct StickStatus joycon_input_report_stick_decode(struct SIRStickStatus status);
+uint16_t joycon_input_report_left_stick_decode(struct SIRStickStatus status);
+uint16_t joycon_input_report_right_stick_decode(struct SIRStickStatus status);
 
 #endif
