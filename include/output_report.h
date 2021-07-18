@@ -5,9 +5,9 @@
 
 enum OutputCommand {
     Subcommand          = 0x01,
-    NFCIRFirmwareUpdate = 0x03,
+    MCUFirmwareUpdate = 0x03,
     Rumble              = 0x10,
-    NFCIRRead           = 0x11,
+    MCURead           = 0x11,
 };
 
 enum OutputSubcommand {
@@ -25,14 +25,14 @@ enum OutputSubcommand {
     SPIFlashWrite,      // 0x11,
     SPISectorErase,     // 0x12,
 
-    ResetNFCIR          = 0x20,
-    SetNFCIRConf,       // 0x21
-    SetNFCIRState,      // 0x22
+    ResetMCU            = 0x20,
+    SetMCUConf,        // 0x21
+    SetMCUState,       // 0x22
 
-    SetNFCIRXXXState    = 0x28,
-    GetNFCIRX28State    = 0x29,
+    SetMCUXXXState      = 0x28,
+    GetMCUX28State      = 0x29,
     SetGPIOPinOut2      = 0x2A,
-    GetNFCIRX29State    = 0x2B,
+    GetMCUX29State      = 0x2B,
 
     SetPlayerLight      = 0x30,
     GetPlayerLight,    // 0x31
@@ -74,6 +74,8 @@ struct SubcommandBodySPIData {
 };
 
 // TODO: NFC/IR
+#include "mcu.h"
+
 // TODO: Voltage
 
 struct SubcommandBody {

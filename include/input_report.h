@@ -5,10 +5,10 @@ enum InputCommand {
     ButtonTrigged       = 0x3F,
     
     SIRWithSubcommand   = 0x21,
-    NFCIRFWUpdateIR     = 0x23,
+    MCUFWUpdateIR       = 0x23,
     
     SIRFullSpeed        = 0x30,
-    NFCIRIR,           // 0x31
+    MCUIR,             // 0x31
     SIRUnknown1,       // 0x32
     SIRUnknown2        // 0x33
 };
@@ -69,7 +69,7 @@ struct InputReportSubcommandReply {
     uint8_t data[35];
 };
 
-struct InputReportNFCIRFWUpdate {
+struct InputReportMCUFWUpdate {
     uint8_t data[37];
 };
 
@@ -78,7 +78,7 @@ struct InputReportIMU {
     uint8_t data[36];
 };
 
-struct InputReportIMUNFCIR {
+struct InputReportIMUMCU {
     // TODO
     uint8_t data[36];
     uint8_t nfc_ir_data[313];

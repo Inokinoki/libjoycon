@@ -3,4 +3,5 @@ add_library(LIBJOYCON SHARED
   input_report.c
   rumble.c
   spi.c
+  mcu.c
 )
