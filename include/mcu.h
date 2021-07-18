@@ -39,6 +39,22 @@ struct MCUConfiguration {
     };
 };
 
+// TODO: Add explanations
+struct IRImageConfig {
+    uint8_t ir_res_reg;
+    uint16_t ir_exposure;
+    uint8_t ir_leds;
+    uint16_t ir_leds_intensity;
+    uint8_t ir_digital_gain;
+    uint8_t ir_ex_light_filter;
+    uint32_t ir_custom_register;
+    uint16_t ir_buffer_update_time;
+    uint8_t ir_hand_analysis_mode;
+    uint8_t ir_hand_analysis_threshold;
+    uint32_t ir_denoise;
+    uint8_t ir_flip;
+};
+
 uint8_t mcu_crc8(uint8_t *buf, uint8_t size);
 
 #endif
