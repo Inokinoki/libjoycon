@@ -1,6 +1,8 @@
 #ifndef INPUT_REPORT_H
 #define INPUT_REPORT_H
 
+#include <stdint.h>
+
 enum InputCommand {
     ButtonTrigged       = 0x3F,
     
@@ -36,6 +38,7 @@ struct InputReportHeader {
     struct SIRStickStatus right_stick_status;
     uint8_t vibrator_input_report;
 };  // 13 bytes
+#pragma pack(pop)
 
 // Right
 #define SIR_BUTTON_STATUS_MASK_Y        0x01
@@ -63,6 +66,7 @@ struct InputReportHeader {
 #define SIR_BUTTON_STATUS_MASK_CAPTURE  0x20
 #define SIR_BUTTON_STATUS_MASK_GRIP     0x80
 
+#pragma pack(push, 1)
 struct InputReportSubcommandReply {
     uint8_t ack;
     uint8_t replied_subcommmand_id;
@@ -83,11 +87,13 @@ struct InputReportIMUMCU {
     uint8_t data[36];
     uint8_t nfc_ir_data[313];
 };
+#pragma pack(pop)
 
 // IMU data
 #include "imu.h"
 
 // Replies
+#pragma pack(push, 1)
 struct GetRegulatedVoltageReply {
     uint8_t low;
     uint8_t high;
@@ -118,6 +124,7 @@ struct StickStatus {
     uint16_t horizontal;
     uint16_t vertical;
 };
+#pragma pack(pop)
 
 struct StickStatus joycon_input_report_stick_decode(struct SIRStickStatus status);
 uint16_t joycon_input_report_left_stick_decode(struct SIRStickStatus status);

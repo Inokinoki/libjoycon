@@ -1,7 +1,7 @@
 #ifndef IMU_H
 #define IMU_H
 
-#include "output_report.h"
+#include <stdint.h>
 
 enum IMUTemperatureUnit {
     IMU_TEMP_C,
@@ -44,6 +44,7 @@ struct IMUPackedData {
         uint8_t value[2];
     } gyro_3;
 };
+#pragma pack(pop)
 
 // Add decoder
 #define SENSITIVITY_ACCELEROMETER_2  0.000061f

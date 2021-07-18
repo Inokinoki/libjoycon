@@ -63,21 +63,25 @@ struct SubcommandBodyArgs {
     uint8_t arg1;
     uint8_t arg2;
 };
+#pragma pack(pop)
 
 // Subcommand arguments
 #define VIBRATION_ENABLE    1
 #define VIBRATION_DISABLE   0
 
+#pragma pack(push, 1)
 struct SubcommandBodySPIData {
     uint32_t offset;
     uint8_t size;
 };
+#pragma pack(pop)
 
 // TODO: NFC/IR
 #include "mcu.h"
 
 // TODO: Voltage
 
+#pragma pack(push, 1)
 struct SubcommandBody {
     uint8_t subcommand;
     union {
@@ -85,6 +89,7 @@ struct SubcommandBody {
         struct SubcommandBodyArgs args;
     };
 };
+#pragma pack(pop)
 
 // Rumble data
 #include "rumble.h"

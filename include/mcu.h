@@ -38,6 +38,7 @@ struct MCUConfiguration {
         struct MCUWriteRegister registers;
     };
 };
+#pragma pack(pop)
 
 // TODO: Add explanations
 struct IRImageConfig {
