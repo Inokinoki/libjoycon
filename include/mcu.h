@@ -20,8 +20,13 @@ struct MCUIRMode {
     uint16_t minor_version;     // TODO: BE/LE?
 };
 
+struct MCURegAddr {
+    uint8_t low;
+    uint8_t high;
+};
+
 struct MCUReg {
-    uint16_t address;           // TODO: BE/LE?
+    struct MCURegAddr address;  // LE
     uint8_t value;
 };
 
