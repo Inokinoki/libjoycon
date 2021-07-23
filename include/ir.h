@@ -17,6 +17,13 @@
 #define IR_RESOLUTION_OCTO              0b01101001;
 #define IR_RESOLUTION_OCTO_NUM_FRAG     0x03;
 
+enum IRResolution {
+    FULL,   // 320 x 240
+    HALF,   // 160 x 120
+    QUAT,   // 80 x 60
+    OCTO    // 40 x 30
+};
+
 /* IR related MCU commands */
 #define IR_UPDATE_TIME_LSB_REG      0x0004      // LSB Buffer Update Time - Default 0x32
 
@@ -45,5 +52,36 @@
 #define IR_DENOISE_SMOOTH_ALGO_REG  0x1067      // Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
 #define IR_DENOISE_SMOOTH_THRES_REG 0x1068      // Edge smoothing threshold - Max 0xFF, Default 0x23
 #define IR_COLOR_INTERPOL_THRES_REG 0x1069      // Color Interpolation threshold - Max 0xFF, Default 0x44
+
+#include "mcu.h"
+
+struct MCUReg joycon_ir_flip_encode(uint8_t value);
+
+struct MCUReg joycon_ir_resolution_encode(enum IRResolution res);
+
+struct MCUReg joycon_ir_led_intensity_high_encode(uint16_t intensity);
+struct MCUReg joycon_ir_led_intensity_low_encode(uint16_t intensity);
+
+struct MCUReg joycon_ir_enable_denoise_smooth_encode(uint8_t enabled);
+struct MCUReg joycon_ir_denoise_smooth_threshold_encode(uint8_t threshold);
+struct MCUReg joycon_ir_color_interpol_threshold_encode(uint8_t threshold);
+
+struct MCUReg joycon_ir_buffer_update_time_low_encode(uint8_t time);
+
+struct MCUReg joycon_ir_exposure_time_low_encode(uint16_t time);
+struct MCUReg joycon_ir_exposure_time_high_encode(uint16_t time);
+
+struct MCUReg joycon_ir_enable_max_exposure_time_encode(uint8_t enabled);
+
+struct MCUReg joycon_ir_led_group_state_encode(uint8_t state);
+
+struct MCUReg joycon_ir_external_light_filter_encode(uint8_t threshold);
+
+struct MCUReg joycon_ir_white_pixel_threshold_encode(uint8_t threshold);
+
+struct MCUReg joycon_ir_digital_gain_low_encode(uint8_t gain);
+struct MCUReg joycon_ir_digital_gain_high_encode(uint8_t gain);
+
+struct MCUReg joycon_ir_finalize_config_encode();
 
 #endif

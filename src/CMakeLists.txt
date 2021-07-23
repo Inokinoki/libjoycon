@@ -4,4 +4,5 @@ add_library(LIBJOYCON SHARED
   rumble.c
   spi.c
   mcu.c
+  ir.c
 )
