@@ -28,3 +28,25 @@ uint8_t mcu_crc8(uint8_t *buf, uint8_t size) {
     }
     return crc8;
 }
+
+struct MCURegAddr joycon_mcu_register_addr_encode(uint16_t address)
+{
+    struct MCURegAddr addr = {
+        .high = ((address >> 8) & 0xFF),
+        .low = (address & 0xFF)
+    };
+    return addr;
+}
+
+struct MCUReg joycon_mcu_register_encode(uint16_t address, uint8_t value)
+{
+    struct MCUReg reg;
+    reg.address = joycon_mcu_register_addr_encode(address);
+    reg.value = value;
+    return reg;
+}
+
+uint16_t joycon_mcu_register_addr_decode(struct MCURegAddr address)
+{
+    return (address.high << 8) | address.low;
+}

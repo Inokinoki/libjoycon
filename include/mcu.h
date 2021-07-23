@@ -63,4 +63,8 @@ struct IRImageConfig {
 
 uint8_t mcu_crc8(uint8_t *buf, uint8_t size);
 
+struct MCURegAddr joycon_mcu_register_addr_encode(uint16_t address);
+struct MCUReg joycon_mcu_register_encode(uint16_t address, uint8_t value);
+uint16_t joycon_mcu_register_addr_decode(struct MCURegAddr address);
+
 #endif
