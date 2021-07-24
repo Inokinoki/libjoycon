@@ -45,6 +45,12 @@ struct MCUConfiguration {
 };
 #pragma pack(pop)
 
+enum MCUMode {
+    MCUMode_STANDBY = 0x01,
+    MCUMode_NFC     = 0x04,
+    MCUMode_IR      = 0x05
+};
+
 // TODO: Add explanations
 struct IRImageConfig {
     uint8_t ir_res_reg;
