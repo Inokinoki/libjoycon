@@ -13,11 +13,16 @@ struct MCUCommand {
     uint8_t subcommand;
 };
 
+struct MCUIRVersion {
+    uint8_t low;
+    uint8_t high;
+};
+
 struct MCUIRMode {
     uint8_t mode;
     uint8_t number;
-    uint16_t major_version;     // TODO: BE/LE?
-    uint16_t minor_version;     // TODO: BE/LE?
+    struct MCUIRVersion major_version;
+    struct MCUIRVersion minor_version;
 };
 
 struct MCURegAddr {
