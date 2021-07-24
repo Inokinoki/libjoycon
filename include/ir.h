@@ -55,6 +55,27 @@ enum IRResolution {
 
 #include "mcu.h"
 
+// TODO: Add explanations
+struct IRImageConfig {
+    uint8_t ir_flip;
+    enum IRResolution ir_res_reg;
+    uint16_t ir_leds_intensity;
+
+    uint8_t ir_denoise_smooth_enabled;
+    uint8_t ir_denoise_threshold;
+    uint8_t ir_color_interpol_threshold;
+
+    uint16_t ir_buffer_update_time;
+
+    uint16_t ir_exposure;
+
+    uint8_t ir_leds;
+
+    uint8_t ir_ex_light_filter;
+
+    uint8_t ir_digital_gain;
+};
+
 struct MCUReg joycon_ir_flip_encode(uint8_t value);
 
 struct MCUReg joycon_ir_resolution_encode(enum IRResolution res);
