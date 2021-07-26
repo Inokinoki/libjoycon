@@ -46,16 +46,18 @@ struct MCUConfiguration {
     struct MCUCommand command;
     union {
         struct {
+            uint8_t unknown;
+            uint8_t ack_index;
+        } ack_conf;
+        struct {
             uint8_t mode;
             uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 1];
         } mode_conf;
         struct {
             struct MCUIRMode ir_mode;
-            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 6];
         } ir_conf;
         struct {
             struct MCUWriteRegister registers;
-            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - (1 + 3 * 9)];
         } register_conf;
     };
     uint8_t crc;
