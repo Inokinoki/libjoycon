@@ -40,13 +40,25 @@ struct MCUWriteRegister {
     struct MCUReg regs[9];
 };
 
+#define MCU_CONF_LEN 36
+#define MCU_CRC_LEN 1
 struct MCUConfiguration {
     struct MCUCommand command;
     union {
-        uint8_t mode;
-        struct MCUIRMode ir_mode;
-        struct MCUWriteRegister registers;
+        struct {
+            uint8_t mode;
+            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 1];
+        } mode_conf;
+        struct {
+            struct MCUIRMode ir_mode;
+            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 6];
+        } ir_conf;
+        struct {
+            struct MCUWriteRegister registers;
+            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - (1 + 3 * 9)];
+        } register_conf;
     };
+    uint8_t crc;
 };
 #pragma pack(pop)
 
