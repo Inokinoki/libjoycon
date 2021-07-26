@@ -46,9 +46,9 @@ struct MCUConfiguration {
     struct MCUCommand command;
     union {
         struct {
-            uint8_t unknown;
+            uint8_t req_index;
             uint8_t ack_index;
-        } ack_conf;
+        } comm_conf;
         struct {
             uint8_t mode;
             uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 1];
