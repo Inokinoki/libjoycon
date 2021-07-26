@@ -40,7 +40,7 @@ struct MCUWriteRegister {
     struct MCUReg regs[9];
 };
 
-#define MCU_CONF_LEN 36
+#define MCU_CONF_LEN 37
 #define MCU_CRC_LEN 1
 struct MCUConfiguration {
     struct MCUCommand command;
