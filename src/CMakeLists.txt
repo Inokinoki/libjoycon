@@ -5,4 +5,5 @@ add_library(LIBJOYCON SHARED
   spi.c
   mcu.c
   ir.c
+  packet.c
 )
