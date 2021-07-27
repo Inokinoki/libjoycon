@@ -12,7 +12,7 @@ void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t i
     pkt->subcommand = 0x03;
     pkt->conf.command.command = 0x00;
     pkt->conf.comm_conf.ack_index = index;
-    pkt->conf.crc = mcu_crc8(&pkt->conf, sizeof(struct MCUConfiguration));
+    pkt->conf.crc = mcu_crc8(&pkt->conf, MCU_CONF_LEN - MCU_CRC_LEN);
     pkt->padding = 0xFF;
 }
 
