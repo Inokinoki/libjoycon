@@ -9,8 +9,8 @@ struct PacketMCUReadComm
     struct Header header;
     uint8_t subcommand;
     struct MCUConfiguration conf;
+    uint8_t crc;
     uint8_t padding;
-    // FIXME: should have 37 bytes
 };
 
 void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index);
@@ -22,6 +22,7 @@ struct PacketMCUConf
     uint8_t subcommand;
     uint8_t padding;
     struct MCUConfiguration conf;
+    uint8_t crc;
     // FIXME: should have 38 bytes
 };
 

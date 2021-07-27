@@ -40,7 +40,7 @@ struct MCUWriteRegister {
     struct MCUReg regs[9];
 };
 
-#define MCU_CONF_LEN 37
+#define MCU_CONF_LEN 36
 #define MCU_CRC_LEN 1
 struct MCUConfiguration {
     struct MCUCommand command;
@@ -51,7 +51,7 @@ struct MCUConfiguration {
         } comm_conf;
         struct {
             uint8_t mode;
-            uint8_t padding[MCU_CONF_LEN - MCU_CRC_LEN - 2 - 1];
+            uint8_t padding[MCU_CONF_LEN - 1 - sizeof(struct MCUCommand)];
         } mode_conf;
         struct {
             struct MCUIRMode ir_mode;
@@ -60,7 +60,6 @@ struct MCUConfiguration {
             struct MCUWriteRegister registers;
         } register_conf;
     };
-    uint8_t crc;
 };
 #pragma pack(pop)
 

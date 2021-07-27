@@ -9,7 +9,7 @@ int main()
 {
     uint8_t buffer[64];
 
-    assert(37 == sizeof(struct MCUConfiguration));
+    assert(36 == sizeof(struct MCUConfiguration));
     assert(49 == sizeof(struct PacketMCUReadComm));
 
     // Test ACK encoding
