@@ -27,6 +27,6 @@ void joycon_packet_mcu_read_req_encode(uint8_t *buffer, uint8_t timer, uint8_t i
     pkt->conf.command.command = 0x00;
     pkt->conf.command.subcommand = 0x01;
     pkt->conf.comm_conf.req_index = index;
-    pkt->conf.crc = mcu_crc8(&pkt->conf, sizeof(struct MCUConfiguration));
+    pkt->conf.crc = mcu_crc8(&pkt->conf, MCU_CONF_LEN - 1);
     pkt->padding = 0xFF;
 }
