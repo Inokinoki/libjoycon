@@ -62,3 +62,22 @@ void joycon_packet_mcu_conf_ir_mode(uint8_t *buffer, uint8_t timer, uint8_t mode
 
     pkt->crc = mcu_crc8(&pkt->conf.ir_conf, MCU_CONF_LEN);
 }
+
+void joycon_packet_mcu_conf_registers(uint8_t *buffer, uint8_t timer,
+    uint8_t number, uint16_t *addrs, uint8_t *vals)
+{
+    struct PacketMCUConf *pkt = (struct PacketMCUConf *)buffer;
+    pkt->header.command = Subcommand;
+    pkt->header.counter = timer;
+    pkt->subcommand = SetMCUConf;
+    pkt->conf.command.command = 0x23;
+    pkt->conf.command.subcommand = 0x04;
+    pkt->conf.register_conf.registers.number = number;
+    for (uint8_t i = 0; i < number; i++)
+    {
+        pkt->conf.register_conf.registers.regs[i] =
+            joycon_mcu_register_encode(addrs[i], vals[i]);
+    }
+
+    pkt->crc = mcu_crc8(&pkt->conf.ir_conf, MCU_CONF_LEN);
+}
