@@ -20,10 +20,9 @@ struct PacketMCUConf
 {
     struct Header header;
     uint8_t subcommand;
-    uint8_t padding;
     struct MCUConfiguration conf;
+    uint8_t padding;
     uint8_t crc;
-    // FIXME: should have 38 bytes
 };
 
 void joycon_packet_mcu_conf_mode(uint8_t *buffer, uint8_t timer, uint8_t mode);
