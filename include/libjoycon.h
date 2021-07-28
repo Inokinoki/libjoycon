@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
-
 #include "input_report.h"
 #include "output_report.h"
 #include "features.h"

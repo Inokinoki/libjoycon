@@ -1,7 +1,7 @@
 #ifndef OUTPUT_REPORT_H
 #define OUTPUT_REPORT_H
 
-#include <stdint.h>
+#include "types.h"
 
 enum OutputCommand {
     Subcommand          = 0x01,
@@ -68,13 +68,6 @@ struct SubcommandBodyArgs {
 // Subcommand arguments
 #define VIBRATION_ENABLE    1
 #define VIBRATION_DISABLE   0
-
-#pragma pack(push, 1)
-struct SubcommandBodySPIData {
-    uint32_t offset;
-    uint8_t size;
-};
-#pragma pack(pop)
 
 // TODO: NFC/IR
 #include "mcu.h"

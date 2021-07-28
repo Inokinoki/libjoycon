@@ -1,7 +1,7 @@
 #ifndef INPUT_REPORT_H
 #define INPUT_REPORT_H
 
-#include <stdint.h>
+#include "types.h"
 
 enum InputCommand {
     ButtonTrigged       = 0x3F,

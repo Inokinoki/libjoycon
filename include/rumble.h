@@ -1,8 +1,7 @@
 #ifndef RUMBLE_H
 #define RUMBLE_H
 
-#include <stdint.h>
-#include <math.h>
+#include "types.h"
 
 /**
  * Rumble encoded data:
@@ -16,10 +15,6 @@
 #define HBHF_AMPLITUDE_MASK 0xFE
 #define LBLF_FREQUENCY_MASK 0x7F
 #define LBLF_INDICATOR_MASK 0x80
-
-struct RumbleEncodedData {
-    uint8_t data[4];
-};
 
 struct RumbleEncodedData joycon_rumble_encode(float freq, float amp);
 

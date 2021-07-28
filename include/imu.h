@@ -1,7 +1,7 @@
 #ifndef IMU_H
 #define IMU_H
 
-#include <stdint.h>
+#include "types.h"
 
 enum IMUTemperatureUnit {
     IMU_TEMP_C,

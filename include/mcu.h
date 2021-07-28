@@ -1,7 +1,7 @@
 #ifndef MCU_H
 #define MCU_H
 
-#include <stdint.h>
+#include "types.h"
 
 #define MCU_SUSPEND 0x00
 #define MCU_RESUME  0x01
