@@ -1,4 +1,4 @@
-#include <libjoycon.h>
+#include <input_report.h>
 
 struct StickStatus joycon_input_report_stick_decode(struct SIRStickStatus status)
 {

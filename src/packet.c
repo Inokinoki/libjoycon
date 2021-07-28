@@ -1,5 +1,4 @@
-#include "../include/packet.h"
-// #include <packet.h>
+#include <packet.h>
 
 
 void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index)

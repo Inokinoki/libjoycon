@@ -1,4 +1,4 @@
-#include <libjoycon.h>
+#include <rumble.h>
 
 struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
 {
