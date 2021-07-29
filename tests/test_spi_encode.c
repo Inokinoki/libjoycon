@@ -1,4 +1,4 @@
-#include "../include/spi.h"
+#include <spi.h>
 #include <assert.h>
 
 int main()
