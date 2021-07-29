@@ -1,4 +1,4 @@
-# Libjoycon - A Joycon packet encoding and decoding lib
+# A Joycon packet encoding and decoding lib
 
 TBD.
 
