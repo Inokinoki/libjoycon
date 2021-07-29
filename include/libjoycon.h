@@ -7,7 +7,7 @@ extern "C" {
 
 #include "input_report.h"
 #include "output_report.h"
-#include "features.h"
+#include "feature_report.h"
 
 #ifdef __cplusplus
 }
