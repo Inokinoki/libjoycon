@@ -1,4 +1,4 @@
-#include "../include/rumble.h"
+#include <rumble.h>
 #include <assert.h>
 
 int main()
