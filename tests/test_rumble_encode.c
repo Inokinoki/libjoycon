@@ -1,4 +1,7 @@
 #include <rumble.h>
+#include <packer.h>
+#include <output_report.h>
+
 #include <assert.h>
 
 int main()
@@ -87,6 +90,33 @@ int main()
     assert((test_high_amp_data2.data[1] & HBHF_AMPLITUDE_MASK) == 0xC6);
     assert((test_high_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
     assert(test_high_amp_data2.data[3] == 0x71);
+
+    uint8_t buffer[64];
+    uint8_t timer;
+    // Test packet encoding
+    timer = 0;
+    joycon_packet_rumble_only(buffer, timer & 0x0F, 80, 0.981379);
+    assert(buffer[0] == Rumble);
+    assert(buffer[1] == timer & 0x0F);
+
+    joycon_packet_append_rumble(buffer, 80, 0.981379);
+    assert(buffer[0] == Rumble);
+    assert(buffer[1] == timer & 0x0F);
+
+    // Test enable or disable rumble
+    timer++;
+    joycon_packet_rumble_enable_only(buffer, timer & 0x0F);
+    assert(buffer[0] == Subcommand);
+    assert(buffer[1] == timer & 0x0F);
+    assert(buffer[10] == EnableVibration);
+    assert(buffer[11] == VIBRATION_ENABLE);
+
+    timer++;
+    joycon_packet_rumble_disable_only(buffer, timer & 0x0F);
+    assert(buffer[0] == Subcommand);
+    assert(buffer[1] == timer & 0x0F);
+    assert(buffer[10] == EnableVibration);
+    assert(buffer[11] == VIBRATION_DISABLE);
 
     return 0;
 }

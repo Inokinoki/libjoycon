@@ -31,4 +31,14 @@ void joycon_packet_mcu_conf_registers(uint8_t *buffer, uint8_t timer, uint8_t nu
     uint16_t *addrs, uint8_t *vals);
 // TODO: Add a version with va_list for joycon_packet_mcu_conf_registers
 
+// Encode rumble into packet
+void joycon_packet_rumble_only(uint8_t *buffer, uint8_t timer, float freq, float amp);
+void joycon_packet_append_rumble(uint8_t *buffer, float freq, float amp);
+
+// Enable or disable rumble
+void joycon_packet_rumble_enable(uint8_t *buffer, uint8_t timer, float freq, float amp);
+void joycon_packet_rumble_disable(uint8_t *buffer, uint8_t timer, float freq, float amp);
+void joycon_packet_rumble_enable_only(uint8_t *buffer, uint8_t timer);
+void joycon_packet_rumble_disable_only(uint8_t *buffer, uint8_t timer);
+
 #endif

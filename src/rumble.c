@@ -1,4 +1,6 @@
 #include <rumble.h>
+#include <packer.h>
+#include <output_report.h>
 
 struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
 {
@@ -25,4 +27,61 @@ struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
     data.data[2] = (lf | ((encoded_hex_amp % 2) << 7));
     data.data[3] = (uint8_t)(lf_amp & 0xFF);
     return data;
+}
+
+void joycon_packet_rumble_only(uint8_t *buffer, uint8_t timer, float freq, float amp)
+{
+    // Reset packet to a rumble-only packet
+    memset(buffer, 0, 64);
+    struct Header *hdr = (struct Header *)buffer;
+    hdr->command = Rumble;
+    hdr->counter = timer;
+    hdr->rumble_l = joycon_rumble_encode(freq, amp);
+    memcpy(hdr->rumble_r.data, hdr->rumble_l.data, sizeof(hdr->rumble_l));
+}
+
+void joycon_packet_append_rumble(uint8_t *buffer, float freq, float amp)
+{
+    // Append rumble to a packet
+    struct Header *hdr = (struct Header *)buffer;
+    hdr->rumble_l = joycon_rumble_encode(freq, amp);
+    memcpy(hdr->rumble_r.data, hdr->rumble_l.data, sizeof(hdr->rumble_l));
+}
+
+void joycon_packet_rumble_enable(uint8_t *buffer, uint8_t timer, float freq, float amp)
+{
+    joycon_packet_rumble_enable_only(buffer, timer);
+
+    // Encode rumble frequency and amplitude
+    joycon_packet_append_rumble(buffer, freq, amp);
+}
+
+void joycon_packet_rumble_disable(uint8_t *buffer, uint8_t timer, float freq, float amp)
+{
+    joycon_packet_rumble_disable_only(buffer, timer);
+
+    // Encode rumble frequency and amplitude
+    joycon_packet_append_rumble(buffer, freq, amp);
+}
+
+void joycon_packet_rumble_enable_only(uint8_t *buffer, uint8_t timer)
+{
+    memset(buffer, 0, 64);
+    struct Header *hdr = (struct Header *)buffer;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = EnableVibration;
+    pkt->args.arg1 = VIBRATION_ENABLE;
+}
+
+void joycon_packet_rumble_disable_only(uint8_t *buffer, uint8_t timer)
+{
+    memset(buffer, 0, 64);
+    struct Header *hdr = (struct Header *)buffer;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = EnableVibration;
+    pkt->args.arg1 = VIBRATION_DISABLE;
 }
