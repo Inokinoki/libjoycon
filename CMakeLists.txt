@@ -17,6 +17,10 @@ target_link_libraries(joycon PRIVATE m)
 # TODO: Add public header
 # set_target_properties(joycon PROPERTIES PUBLIC_HEADER libjoycon.h)
 
+if(BUILD_EXAMPLE)
+    add_subdirectory(examples)
+endif()
+
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

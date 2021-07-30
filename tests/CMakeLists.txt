@@ -11,7 +11,3 @@ target_link_libraries(test_spi_encode ${test_libraries})
 add_executable(test_rumble_encode test_rumble_encode.c)
 add_test("Test rumble encode" test_rumble_encode)
 target_link_libraries(test_rumble_encode ${test_libraries})
-
-# TODO: Add hidapi for integration test
-# TODO: Add OpenGL detection for visualization integration test
-# TODO: Move the integration tests to examples
