@@ -13,6 +13,10 @@ if(HIDAPI_FOUND)
     include_directories(joycon_getcolor ${HIDAPI_INCLUDE_DIRS})
     target_link_libraries(joycon_getcolor joycon ${HIDAPI_LIBRARIES})
 
+    add_executable(joycon_playmxbc joycon_playmxbc.c)
+    include_directories(joycon_playmxbc ${HIDAPI_INCLUDE_DIRS})
+    target_link_libraries(joycon_playmxbc joycon ${HIDAPI_LIBRARIES})
+
     # TODO: Add OpenGL detection
 else()
     message(HIDAPI not found, examples will not be built)

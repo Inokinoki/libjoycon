@@ -3,6 +3,9 @@
 int handle_ok;
 static int check_connection_ok;
 
+#include <unistd.h>
+#define Sleep(x) usleep(x * 1000)
+
 typedef enum {
     NO_ERR,
     ERR_NUL,
