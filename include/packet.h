@@ -41,4 +41,11 @@ void joycon_packet_rumble_disable(uint8_t *buffer, uint8_t timer, float freq, fl
 void joycon_packet_rumble_enable_only(uint8_t *buffer, uint8_t timer);
 void joycon_packet_rumble_disable_only(uint8_t *buffer, uint8_t timer);
 
+// Encode SPI reading data
+// TODO: void joycon_packet_read_spi(uint8_t *buffer, uint8_t timer, uint32_t offset, uint8_t size);
+void joycon_packet_read_spi_sn(uint8_t *buffer, uint8_t timer);
+void joycon_packet_read_spi_body_color(uint8_t *buffer, uint8_t timer);
+void joycon_packet_read_spi_btn_color(uint8_t *buffer, uint8_t timer);
+void joycon_packet_read_spi_color(uint8_t *buffer, uint8_t timer);
+
 #endif

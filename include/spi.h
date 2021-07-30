@@ -15,6 +15,7 @@ Config and calibration 	x6000 	xA000 	Stores Factory configuration and calibrati
 PatchRAM section 	    x10000 	x70000
 */
 
+// TODO: Fix endian
 #define SPI_REGION_CONF         0x6000
 #define SPI_REGION_CONF_SIZE    0xA000
 #define SPI_REGION_CONF_OFF_SN          (SPI_REGION_CONF + 0x00)
