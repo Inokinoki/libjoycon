@@ -1,7 +1,15 @@
-set(test_libraries joycon)
+find_package(PkgConfig)
+if(PkgConfig_FOUND)
+    pkg_check_modules(HIDAPI hidapi-hidraw)
+endif()
 
-add_executable(joycon_helloworld joycon_helloworld.c)
-target_link_libraries(joycon_helloworld joycon)
+if(HIDAPI_FOUND)
+    # Add HIDAPI
+    add_executable(joycon_helloworld joycon_helloworld.c)
+    include_directories(joycon_helloworld ${HIDAPI_INCLUDE_DIRS})
+    target_link_libraries(joycon_helloworld joycon ${HIDAPI_LIBRARIES})
 
-# TODO: Add hidapi
-# TODO: Add OpenGL detection
+    # TODO: Add OpenGL detection
+else()
+    message(HIDAPI not found, examples will not be built)
+endif()
