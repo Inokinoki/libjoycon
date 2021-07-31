@@ -18,6 +18,10 @@ if(HIDAPI_FOUND)
     target_link_libraries(joycon_playmxbc joycon ${HIDAPI_LIBRARIES})
 
     # TODO: Add OpenGL detection
+
+    add_executable(joycon_playerlight joycon_playerlight.c)
+    include_directories(joycon_playerlight ${HIDAPI_INCLUDE_DIRS})
+    target_link_libraries(joycon_playerlight joycon ${HIDAPI_LIBRARIES})
 else()
     message(HIDAPI not found, examples will not be built)
 endif()
