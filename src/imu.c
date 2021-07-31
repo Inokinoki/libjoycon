@@ -1,4 +1,5 @@
 #include <imu.h>
+#include <output_report.h>
 
 float joycon_temperature_decode(unsigned char *temp_info, enum IMUTemperatureUnit unit)
 {
@@ -48,3 +49,26 @@ float joycon_accel_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity s
 {
     return joycon_accel_decode((unit.high << 8) | unit.low, sensitivity);
 }
+
+void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, sizeof(buf));
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = EnableIMU;
+    pkt->args.arg1 = IMU_ENABLE;
+}
+
+void joycon_packet_imu_disable(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, sizeof(buf));
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = EnableIMU;
+    pkt->args.arg1 = IMU_DISABLE;
+}
+

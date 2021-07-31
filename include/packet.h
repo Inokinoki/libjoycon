@@ -51,4 +51,7 @@ void joycon_packet_read_spi_color(uint8_t *buffer, uint8_t timer);
 void joycon_packet_player_light_enable(uint8_t *buf, uint8_t timer, uint8_t light);
 void joycon_packet_player_light_disable(uint8_t *buf, uint8_t timer);
 
+void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer);
+void joycon_packet_imu_disable(uint8_t *buf, uint8_t timer);
+
 #endif

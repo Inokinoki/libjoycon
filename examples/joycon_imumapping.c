@@ -71,18 +71,9 @@ int main(int argc, char **argv)
     con.handle = handle;
     fprintf(stderr, "Connected device\n");
 
-    /*
-    TODO: Enable IMU
-    memset(buf, 0, sizeof(buf));
-    struct Header *hdr = (struct Header *)buf;
-    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
-    hdr->command = Subcommand;
-    hdr->counter = timer & 0xF;
-    timer++;
-    pkt->subcommand = EnableIMU;
-    pkt->args.arg1 = IMU_ENABLE;
+    // Enable IMU
+    joycon_packet_imu_enable(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
-    */
 
     /*
     TODO: Use SIR Full Speed
@@ -98,15 +89,10 @@ int main(int argc, char **argv)
     // Use mainloop
     mainloop();
 
-    /*
-    TODO: Disable IMU
-    memset(buf, 0, sizeof(buf));
-    hdr->counter = timer & 0xF;
+    // Disable IMU
     timer++;
-    pkt->subcommand = EnableIMU;
-    pkt->args.arg1 = IMU_DISABLE;
+    joycon_packet_imu_disable(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
-    */
 
     /*
     TODO: Recover basic input
