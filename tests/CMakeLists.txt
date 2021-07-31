@@ -4,6 +4,10 @@ add_executable(test_packet_encode test_packet_encode.c)
 add_test("Test packet encode" test_packet_encode)
 target_link_libraries(test_packet_encode ${test_libraries})
 
+add_executable(test_packet_light_encode test_packet_light_encode.c)
+add_test("Test light packet encode" test_packet_light_encode)
+target_link_libraries(test_packet_light_encode ${test_libraries})
+
 add_executable(test_spi_encode test_spi_encode.c)
 add_test("Test SPI encode" test_spi_encode)
 target_link_libraries(test_spi_encode ${test_libraries})
