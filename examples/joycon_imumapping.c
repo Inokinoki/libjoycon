@@ -75,16 +75,10 @@ int main(int argc, char **argv)
     joycon_packet_imu_enable(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
 
-    /*
-    TODO: Use SIR Full Speed
-    memset(buf, 0, sizeof(buf));
-    hdr->command = Subcommand;
-    hdr->counter = timer & 0xF;
+    // Use SIR Full Speed
     timer++;
-    pkt->subcommand = SetInputReportMode;
-    pkt->args.arg1 = SIRFullSpeed;
+    joycon_packet_input_report_mode(SIRFullSpeed);
     hid_write(handle, buf, sizeof(buf));
-    */
 
     // Use mainloop
     mainloop();
@@ -94,15 +88,10 @@ int main(int argc, char **argv)
     joycon_packet_imu_disable(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
 
-    /*
-    TODO: Recover basic input
-    memset(buf, 0, sizeof(buf));
-    hdr->counter = timer & 0xF;
+    // Recover basic input
     timer++;
-    pkt->subcommand = SetInputReportMode;
-    pkt->args.arg1 = ButtonTrigged;
+    joycon_packet_input_report_mode(ButtonTrigged);
     hid_write(handle, buf, sizeof(buf));
-    */
 
     release_joycon(&con);
     return 0; /* ANSI C requires main to return int. */
