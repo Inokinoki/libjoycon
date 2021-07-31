@@ -80,3 +80,25 @@ void joycon_packet_mcu_conf_registers(uint8_t *buffer, uint8_t timer,
 
     pkt->crc = mcu_crc8(&pkt->conf.ir_conf, MCU_CONF_LEN);
 }
+
+void joycon_packet_player_light_enable(uint8_t *buf, uint8_t timer, uint8_t light)
+{
+    memset(buf, 0, 64);
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = SetPlayerLight;
+    pkt->args.arg1 = light;
+}
+
+void joycon_packet_player_light_disable(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, 64);
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = SetPlayerLight;
+    pkt->args.arg1 = 0;
+}
