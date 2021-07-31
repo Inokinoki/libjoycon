@@ -1,5 +1,5 @@
 #include <rumble.h>
-#include <packer.h>
+#include <packet.h>
 #include <output_report.h>
 
 struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
