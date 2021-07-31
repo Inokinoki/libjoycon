@@ -25,6 +25,7 @@ void joycon_packet_input_report_mode(uint8_t *buf, uint8_t timer, uint8_t mode)
     memset(buf, 0, 64);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
     hdr->counter = timer;
     pkt->subcommand = SetInputReportMode;
     pkt->args.arg1 = mode;

@@ -77,8 +77,10 @@ int main(int argc, char **argv)
 
     // Use SIR Full Speed
     timer++;
-    joycon_packet_input_report_mode(SIRFullSpeed);
+    joycon_packet_input_report_mode(buf, timer & 0xF, SIRFullSpeed);
     hid_write(handle, buf, sizeof(buf));
+
+    init(argc, argv);
 
     // Use mainloop
     mainloop();
@@ -90,7 +92,7 @@ int main(int argc, char **argv)
 
     // Recover basic input
     timer++;
-    joycon_packet_input_report_mode(ButtonTrigged);
+    joycon_packet_input_report_mode(buf, timer & 0xF, ButtonTrigged);
     hid_write(handle, buf, sizeof(buf));
 
     release_joycon(&con);
