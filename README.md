@@ -15,7 +15,7 @@ make
 If you want to build examples, the HIDAPI lib is a must. The OpenGL and GLUT/Vulkan is necessary to build IMU Mapping. Configure the project with `BUILD_EXAMPLE` as follows:
 
 ```
-cmake -DBUILDING_EXAMPLE=ON ..
+cmake -DBUILD_EXAMPLE=ON ..
 ```
 
 ## Usage
