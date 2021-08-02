@@ -91,7 +91,7 @@ int main()
     assert((test_high_amp_data2.data[2] & LBLF_INDICATOR_MASK) == 0x80);
     assert(test_high_amp_data2.data[3] == 0x71);
 
-    uint8_t buffer[64];
+    uint8_t buffer[OUTPUT_REPORT_LEGNTH];
     uint8_t timer;
     // Test packet encoding
     timer = 0;

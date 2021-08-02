@@ -7,7 +7,7 @@
 
 int main()
 {
-    uint8_t buffer[64];
+    uint8_t buffer[OUTPUT_REPORT_LEGNTH];
 
     assert(36 == sizeof(struct MCUConfiguration));
     assert(49 == sizeof(struct PacketMCUReadComm));

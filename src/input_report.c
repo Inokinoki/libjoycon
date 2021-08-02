@@ -22,7 +22,7 @@ uint16_t joycon_input_report_right_stick_decode(struct SIRStickStatus status)
 
 void joycon_packet_input_report_mode(uint8_t *buf, uint8_t timer, uint8_t mode)
 {
-    memset(buf, 0, 64);
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;

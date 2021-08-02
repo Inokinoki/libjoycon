@@ -8,7 +8,7 @@
 
 int main()
 {
-    uint8_t buf[64];     // Buffer for an output packet
+    uint8_t buf[OUTPUT_REPORT_LEGNTH];     // Buffer for an output packet
     uint8_t timer = 0;      // Timer for the output packets, incr by 1 for each sending
 
     // Connect and get color
@@ -21,7 +21,7 @@ int main()
     con.handle = handle;
     fprintf(stderr, "Connected device\n");
 
-    uint8_t buf_read[64];
+    uint8_t buf_read[INPUT_REPORT_STANDARD_LEGNTH];
     joycon_packet_read_spi_body_color(buf, timer & 0x0F);
     hid_write(handle, buf, sizeof(buf));
 

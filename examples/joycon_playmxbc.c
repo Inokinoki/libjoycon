@@ -19,7 +19,7 @@ int mxbc_duration[NOTE_LENGTH] = {
 
 int main()
 {
-    uint8_t buf[64];     // Buffer for an output packet
+    uint8_t buf[OUTPUT_REPORT_LEGNTH];     // Buffer for an output packet
     uint8_t timer = 0;      // Timer for the output packets, incr by 1 for each sending
     int res;
 

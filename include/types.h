@@ -1,6 +1,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#define OUTPUT_REPORT_LEGNTH 64
+#define INPUT_REPORT_STANDARD_LEGNTH 64
+
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;

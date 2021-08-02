@@ -52,7 +52,7 @@ float joycon_accel_raw_decode(struct IMUPackedLEUnit unit, enum IMUSensitivity s
 
 void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer)
 {
-    memset(buf, 0, 64);
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -63,7 +63,7 @@ void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer)
 
 void joycon_packet_imu_disable(uint8_t *buf, uint8_t timer)
 {
-    memset(buf, 0, 64);
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;

@@ -3,7 +3,7 @@
 
 void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct PacketMCUReadComm *pkt = (struct PacketMCUReadComm *)buffer;
     pkt->header.command = MCURead;
     pkt->header.counter = timer;
@@ -17,7 +17,7 @@ void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t i
 
 void joycon_packet_mcu_read_req_encode(uint8_t *buffer, uint8_t timer, uint8_t index)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct PacketMCUReadComm *pkt = (struct PacketMCUReadComm *)buffer;
     pkt->header.command = MCURead;
     pkt->header.counter = timer;
@@ -83,7 +83,7 @@ void joycon_packet_mcu_conf_registers(uint8_t *buffer, uint8_t timer,
 
 void joycon_packet_player_light_enable(uint8_t *buf, uint8_t timer, uint8_t light)
 {
-    memset(buf, 0, 64);
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -94,7 +94,7 @@ void joycon_packet_player_light_enable(uint8_t *buf, uint8_t timer, uint8_t ligh
 
 void joycon_packet_player_light_disable(uint8_t *buf, uint8_t timer)
 {
-    memset(buf, 0, 64);
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;

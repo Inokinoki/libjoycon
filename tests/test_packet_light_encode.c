@@ -6,7 +6,7 @@
 
 int main()
 {
-    uint8_t buf[64];
+    uint8_t buf[OUTPUT_REPORT_LEGNTH];
     struct Header *hdr = (struct Header *)buf;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
 

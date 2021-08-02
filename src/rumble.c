@@ -32,7 +32,7 @@ struct RumbleEncodedData joycon_rumble_encode(float freq, float amp)
 void joycon_packet_rumble_only(uint8_t *buffer, uint8_t timer, float freq, float amp)
 {
     // Reset packet to a rumble-only packet
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     hdr->command = Rumble;
     hdr->counter = timer;
@@ -66,7 +66,7 @@ void joycon_packet_rumble_disable(uint8_t *buffer, uint8_t timer, float freq, fl
 
 void joycon_packet_rumble_enable_only(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -77,7 +77,7 @@ void joycon_packet_rumble_enable_only(uint8_t *buffer, uint8_t timer)
 
 void joycon_packet_rumble_disable_only(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;

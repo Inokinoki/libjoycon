@@ -27,7 +27,7 @@ float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity)
 void read_imu_data(int t)
 {
     // Update angle
-    uint8_t buf_read[64];
+    uint8_t buf_read[INPUT_REPORT_STANDARD_LEGNTH];
     int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
     struct InputReportHeader *header = (struct InputReportHeader *)buf_read;
     switch (header->id)
@@ -58,7 +58,7 @@ void read_imu_data(int t)
 
 int main(int argc, char **argv)
 {
-    uint8_t buf[64];        // Buffer for an output packet
+    uint8_t buf[OUTPUT_REPORT_LEGNTH];        // Buffer for an output packet
     uint8_t timer = 0;      // Timer for the output packets, incr by 1 for each sending
 
     // Connect and do nothing

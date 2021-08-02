@@ -38,7 +38,7 @@ struct SubcommandBodySPIData joycon_spi_read_color_encode()
 
 void joycon_packet_read_spi_sn(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -49,7 +49,7 @@ void joycon_packet_read_spi_sn(uint8_t *buffer, uint8_t timer)
 
 void joycon_packet_read_spi_body_color(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -60,7 +60,7 @@ void joycon_packet_read_spi_body_color(uint8_t *buffer, uint8_t timer)
 
 void joycon_packet_read_spi_btn_color(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
@@ -71,7 +71,7 @@ void joycon_packet_read_spi_btn_color(uint8_t *buffer, uint8_t timer)
 
 void joycon_packet_read_spi_color(uint8_t *buffer, uint8_t timer)
 {
-    memset(buffer, 0, 64);
+    memset(buffer, 0, OUTPUT_REPORT_LEGNTH);
     struct Header *hdr = (struct Header *)buffer;
     struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
     hdr->command = Subcommand;
