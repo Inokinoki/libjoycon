@@ -1,5 +1,6 @@
 #include <imu.h>
 #include <output_report.h>
+#include <string.h>
 
 float joycon_temperature_decode(unsigned char *temp_info, enum IMUTemperatureUnit unit)
 {

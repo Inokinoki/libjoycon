@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include <libjoycon.h>
+#include <packet.h>
 
 #include "hidapi_connection.h"
 #include "joycon_imumapping.h"
