@@ -27,8 +27,7 @@ if(HIDAPI_FOUND)
         include_directories(joycon_imumapping ${HIDAPI_INCLUDE_DIRS} ${GL_INCLUDE_DIRS} ${GLU_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
         target_link_libraries(joycon_imumapping joycon ${HIDAPI_LIBRARIES} ${GL_LIBRARIES} ${GLU_LIBRARIES} ${GLUT_LIBRARIES})
     else()
-        message("Not building IMU Mapping example")
-        # TODO: Build Vulkan example
+        message("Not building IMU Mapping example due to missing of OpenGL/GLUT/GLU")
     endif()
 
     add_executable(joycon_playerlight joycon_playerlight.c)
