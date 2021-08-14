@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include <endian.h>
 
@@ -139,5 +140,110 @@ int main()
     }
 
     // TODO: Test values
+
+    // Test jctools - libjoycon compatibility
+    {
+        uint8_t buf[OUTPUT_REPORT_LEGNTH];
+        memset(buf, 0, OUTPUT_REPORT_LEGNTH);
+        struct brcm_hdr *hdr = (struct brcm_hdr *)buf;
+        struct brcm_cmd_01 *pkt = (struct brcm_cmd_01 *)(hdr + 1);
+        struct PacketMCUConf *conf_packet = (struct PacketMCUConf *)buf;
+        hdr->cmd = 0x01;
+        pkt->subcmd = 0x21;
+        assert(conf_packet->header.command == 0x01);
+        assert(conf_packet->subcommand == 0x21);
+
+        pkt->subcmd_21_23_04.mcu_cmd    = 0x23; // Write register cmd
+        pkt->subcmd_21_23_04.mcu_subcmd = 0x04; // Write register to IR mode subcmd
+        pkt->subcmd_21_23_04.no_of_reg  = 0x09; // Number of registers to write. Max 9. 
+        assert(conf_packet->conf.command.command == 0x23);
+        assert(conf_packet->conf.command.subcommand == 0x04);
+        assert(conf_packet->conf.register_conf.registers.number == 0x09);
+
+        pkt->subcmd_21_23_04.reg1_addr  = 0x2e00; // R: 0x002e - Set Resolution based on sensor binning and skipping
+        pkt->subcmd_21_23_04.reg1_val   = 0;
+        assert(conf_packet->conf.register_conf.registers.regs[0].value == 0x0);
+        // TODO: Fix addr
+        // assert((conf_packet->conf.register_conf.registers.regs[0].address.low
+        //     | (conf_packet->conf.register_conf.registers.regs[0].address.high << 8)) == IR_RESOLUTION_REG);
+
+        pkt->subcmd_21_23_04.reg2_addr  = 0x3001; // R: 0x0130 - Set Exposure time LSByte - (31200 * us /1000) & 0xFF - Max: 600us, Max encoded: 0x4920.
+        pkt->subcmd_21_23_04.reg2_val   = 0x4920 & 0xFF;
+        assert(conf_packet->conf.register_conf.registers.regs[1].value == 0x20);
+
+        pkt->subcmd_21_23_04.reg3_addr  = 0x3101; // R: 0x0131 - Set Exposure time MSByte - ((31200 * us /1000) & 0xFF00) >> 8
+        pkt->subcmd_21_23_04.reg3_val   = (0x4920 & 0xFF00) >> 8;
+        assert(conf_packet->conf.register_conf.registers.regs[2].value == 0x49);
+
+        pkt->subcmd_21_23_04.reg4_addr  = 0x3201; // R: 0x0132 - Enable Max exposure Time - 0: Manual exposure, 1: Max exposure
+        pkt->subcmd_21_23_04.reg4_val   = 0x00;
+        assert(conf_packet->conf.register_conf.registers.regs[3].value == 0x0);
+        
+        pkt->subcmd_21_23_04.reg5_addr  = 0x1000; // R: 0x0010 - Set IR Leds groups state - Only 3 LSB usable
+        pkt->subcmd_21_23_04.reg5_val   = 0b000000;
+        assert(conf_packet->conf.register_conf.registers.regs[4].value == 0x0);
+
+        pkt->subcmd_21_23_04.reg6_addr  = 0x2e01; // R: 0x012e - Set digital gain LSB 4 bits of the value - 0-0xff
+        pkt->subcmd_21_23_04.reg6_val   = 0xFF;
+        assert(conf_packet->conf.register_conf.registers.regs[5].value == 0xFF);
+
+        pkt->subcmd_21_23_04.reg7_addr  = 0x2f01; // R: 0x012f - Set digital gain MSB 4 bits of the value - 0-0x7
+        pkt->subcmd_21_23_04.reg7_val   = 0x07;
+        assert(conf_packet->conf.register_conf.registers.regs[6].value == 0x07);
+
+        pkt->subcmd_21_23_04.reg8_addr  = 0x0e00; // R: 0x00e0 - External light filter - LS o bit0: Off/On, bit1: 0x/1x, bit2: ??, bit4,5: ??.
+        pkt->subcmd_21_23_04.reg8_val   = 0;
+        assert(conf_packet->conf.register_conf.registers.regs[7].value == 0x0);
+
+        pkt->subcmd_21_23_04.reg9_addr  = 0x4301; // R: 0x0143 - ExLF/White pixel stats threshold - 200: Default
+        pkt->subcmd_21_23_04.reg9_val   = 0xc8;
+        assert(conf_packet->conf.register_conf.registers.regs[8].value == 0xc8);
+
+
+        memset(buf, 0, OUTPUT_REPORT_LEGNTH);
+        hdr->cmd = 0x01;
+        pkt->subcmd = 0x21;
+        assert(conf_packet->header.command == 0x01);
+        assert(conf_packet->subcommand == 0x21);
+
+        pkt->subcmd_21_23_04.mcu_cmd    = 0x23; // Write register cmd
+        pkt->subcmd_21_23_04.mcu_subcmd = 0x04; // Write register to IR mode subcmd
+        pkt->subcmd_21_23_04.no_of_reg  = 0x08; // Number of registers to write. Max 9.   
+        assert(conf_packet->conf.command.command == 0x23);
+        assert(conf_packet->conf.command.subcommand == 0x04);
+        assert(conf_packet->conf.register_conf.registers.number == 0x08);   
+
+        pkt->subcmd_21_23_04.reg1_addr  = 0x1100; // R: 0x0011 - Leds 1/2 Intensity - Max 0x0F.
+        pkt->subcmd_21_23_04.reg1_val   = (0x0F) & 0xFF;
+        assert(conf_packet->conf.register_conf.registers.regs[0].value == 0x0F);
+
+        pkt->subcmd_21_23_04.reg2_addr  = 0x1200; // R: 0x0012 - Leds 3/4 Intensity - Max 0x10.
+        pkt->subcmd_21_23_04.reg2_val   = 0x10 & 0xFF;
+        assert(conf_packet->conf.register_conf.registers.regs[1].value == 0x10);
+
+        pkt->subcmd_21_23_04.reg3_addr  = 0x2d00; // R: 0x002d - Flip image - 0: Normal, 1: Vertically, 2: Horizontally, 3: Both 
+        pkt->subcmd_21_23_04.reg3_val   = 0;
+        assert(conf_packet->conf.register_conf.registers.regs[2].value == 0x0);
+
+        pkt->subcmd_21_23_04.reg4_addr  = 0x6701; // R: 0x0167 - Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
+        pkt->subcmd_21_23_04.reg4_val   = 0;
+        assert(conf_packet->conf.register_conf.registers.regs[3].value == 0x0);
+        
+        pkt->subcmd_21_23_04.reg5_addr  = 0x6801; // R: 0x0168 - Edge smoothing threshold - Max 0xFF, Default 0x23
+        pkt->subcmd_21_23_04.reg5_val   = 0x23;
+        assert(conf_packet->conf.register_conf.registers.regs[4].value == 0x23);
+
+        pkt->subcmd_21_23_04.reg6_addr  = 0x6901; // R: 0x0169 - Color Interpolation threshold - Max 0xFF, Default 0x44
+        pkt->subcmd_21_23_04.reg6_val   = 0x44;
+        assert(conf_packet->conf.register_conf.registers.regs[5].value == 0x44);
+
+        pkt->subcmd_21_23_04.reg7_addr  = 0x0400; // R: 0x0004 - LSB Buffer Update Time - Default 0x32
+        pkt->subcmd_21_23_04.reg7_val   = 0x32; // All the other resolutions the default is enough. Otherwise a lower value can break hand analysis.
+        assert(conf_packet->conf.register_conf.registers.regs[6].value == 0x32);
+
+        pkt->subcmd_21_23_04.reg8_addr  = 0x0700; // R: 0x0007 - Finalize config - Without this, the register changes do not have any effect.
+        pkt->subcmd_21_23_04.reg8_val   = 0x01;
+        assert(conf_packet->conf.register_conf.registers.regs[7].value == 0x01);
+    }
     return 0;
 }
