@@ -67,7 +67,10 @@ int main()
             goto giveup;
     }
 
-    // TODO: Set MCU mode
+    // TODO: debug Set MCU mode
+    timer++;
+    joycon_packet_mcu_conf_mode(buf, timer & 0xF, MCUMode_IR);
+    hid_write(handle, buf, sizeof(buf));
 
     // Request MCU mode status
     // Not necessary, but we keep to make sure the MCU is ready.
@@ -89,7 +92,10 @@ int main()
             goto giveup;
     }
 
-    // TODO: Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
+    // TODO: debug Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
+    timer++;
+    joycon_packet_mcu_conf_ir_mode(buf, timer & 0xF, 0x07, IR_RESOLUTION_FULL_NUM_FRAG);
+    hid_write(handle, buf, sizeof(buf));
 
     // TODO: Request IR mode status
     // Not necessary, but we keep to make sure the MCU is ready.
