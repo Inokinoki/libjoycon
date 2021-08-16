@@ -49,9 +49,9 @@ enum IRResolution {
 
 #define IR_WHITE_PIXEL_THRES_REG    0x0143      // ExLF/White pixel stats threshold - Default: 200
 
-#define IR_DENOISE_SMOOTH_ALGO_REG  0x1067      // Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
-#define IR_DENOISE_SMOOTH_THRES_REG 0x1068      // Edge smoothing threshold - Max 0xFF, Default 0x23
-#define IR_COLOR_INTERPOL_THRES_REG 0x1069      // Color Interpolation threshold - Max 0xFF, Default 0x44
+#define IR_DENOISE_SMOOTH_ALGO_REG  0x0167      // Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
+#define IR_DENOISE_SMOOTH_THRES_REG 0x0168      // Edge smoothing threshold - Max 0xFF, Default 0x23
+#define IR_COLOR_INTERPOL_THRES_REG 0x0169      // Color Interpolation threshold - Max 0xFF, Default 0x44
 
 #include "mcu.h"
 

@@ -225,39 +225,55 @@ int main()
         pkt->subcmd_21_23_04.no_of_reg  = 0x08; // Number of registers to write. Max 9.   
         assert(conf_packet->conf.command.command == 0x23);
         assert(conf_packet->conf.command.subcommand == 0x04);
-        assert(conf_packet->conf.register_conf.registers.number == 0x08);   
+        assert(conf_packet->conf.register_conf.registers.number == 0x08);
 
         pkt->subcmd_21_23_04.reg1_addr  = 0x1100; // R: 0x0011 - Leds 1/2 Intensity - Max 0x0F.
         pkt->subcmd_21_23_04.reg1_val   = (0x0F) & 0xFF;
         assert(conf_packet->conf.register_conf.registers.regs[0].value == 0x0F);
+        assert(((conf_packet->conf.register_conf.registers.regs[0].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[0].address.low) == IR_LED_INTENSITY_12_REG);
 
         pkt->subcmd_21_23_04.reg2_addr  = 0x1200; // R: 0x0012 - Leds 3/4 Intensity - Max 0x10.
         pkt->subcmd_21_23_04.reg2_val   = 0x10 & 0xFF;
         assert(conf_packet->conf.register_conf.registers.regs[1].value == 0x10);
+        assert(((conf_packet->conf.register_conf.registers.regs[1].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[1].address.low) == IR_LED_INTENSITY_34_REG);
 
         pkt->subcmd_21_23_04.reg3_addr  = 0x2d00; // R: 0x002d - Flip image - 0: Normal, 1: Vertically, 2: Horizontally, 3: Both 
         pkt->subcmd_21_23_04.reg3_val   = 0;
         assert(conf_packet->conf.register_conf.registers.regs[2].value == 0x0);
+        assert(((conf_packet->conf.register_conf.registers.regs[2].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[2].address.low) == IR_FLIP_IMAGE_REG);
 
         pkt->subcmd_21_23_04.reg4_addr  = 0x6701; // R: 0x0167 - Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
         pkt->subcmd_21_23_04.reg4_val   = 0;
         assert(conf_packet->conf.register_conf.registers.regs[3].value == 0x0);
+        assert(((conf_packet->conf.register_conf.registers.regs[3].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[3].address.low) == IR_DENOISE_SMOOTH_ALGO_REG);
         
         pkt->subcmd_21_23_04.reg5_addr  = 0x6801; // R: 0x0168 - Edge smoothing threshold - Max 0xFF, Default 0x23
         pkt->subcmd_21_23_04.reg5_val   = 0x23;
         assert(conf_packet->conf.register_conf.registers.regs[4].value == 0x23);
+        assert(((conf_packet->conf.register_conf.registers.regs[4].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[4].address.low) == IR_DENOISE_SMOOTH_THRES_REG);
 
         pkt->subcmd_21_23_04.reg6_addr  = 0x6901; // R: 0x0169 - Color Interpolation threshold - Max 0xFF, Default 0x44
         pkt->subcmd_21_23_04.reg6_val   = 0x44;
         assert(conf_packet->conf.register_conf.registers.regs[5].value == 0x44);
+        assert(((conf_packet->conf.register_conf.registers.regs[5].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[5].address.low) == IR_COLOR_INTERPOL_THRES_REG);
 
         pkt->subcmd_21_23_04.reg7_addr  = 0x0400; // R: 0x0004 - LSB Buffer Update Time - Default 0x32
         pkt->subcmd_21_23_04.reg7_val   = 0x32; // All the other resolutions the default is enough. Otherwise a lower value can break hand analysis.
         assert(conf_packet->conf.register_conf.registers.regs[6].value == 0x32);
+        assert(((conf_packet->conf.register_conf.registers.regs[6].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[6].address.low) == IR_UPDATE_TIME_LSB_REG);
 
         pkt->subcmd_21_23_04.reg8_addr  = 0x0700; // R: 0x0007 - Finalize config - Without this, the register changes do not have any effect.
         pkt->subcmd_21_23_04.reg8_val   = 0x01;
         assert(conf_packet->conf.register_conf.registers.regs[7].value == 0x01);
+        assert(((conf_packet->conf.register_conf.registers.regs[7].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[7].address.low) == IR_APPLY_REG);
     }
     return 0;
 }
