@@ -26,8 +26,8 @@ struct MCUIRMode {
 };
 
 struct MCURegAddr {
-    uint8_t low;
     uint8_t high;
+    uint8_t low;
 };
 
 struct MCUReg {

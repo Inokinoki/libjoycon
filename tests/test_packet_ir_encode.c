@@ -87,8 +87,7 @@ int main()
         struct MCUReg reg;
         uint16_t *reg_p = (uint16_t *)&reg.address;
         reg = joycon_ir_finalize_config_encode();
-        assert(le16toh(*reg_p) == (reg.address.high << 8 | (reg.address.low)));
-        assert(IR_APPLY_REG == (reg.address.high << 8 | (reg.address.low)));
+        assert(htole16(*reg_p) == (reg.address.high | (reg.address.low << 8)));
 
         reg = joycon_ir_buffer_update_time_low_encode(0);
         assert(IR_UPDATE_TIME_LSB_REG == (reg.address.high << 8 | (reg.address.low)));
@@ -163,41 +162,56 @@ int main()
         pkt->subcmd_21_23_04.reg1_addr  = 0x2e00; // R: 0x002e - Set Resolution based on sensor binning and skipping
         pkt->subcmd_21_23_04.reg1_val   = 0;
         assert(conf_packet->conf.register_conf.registers.regs[0].value == 0x0);
-        // TODO: Fix addr
-        // assert((conf_packet->conf.register_conf.registers.regs[0].address.low
-        //     | (conf_packet->conf.register_conf.registers.regs[0].address.high << 8)) == IR_RESOLUTION_REG);
+        assert(((conf_packet->conf.register_conf.registers.regs[0].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[0].address.low) == IR_RESOLUTION_REG);
 
         pkt->subcmd_21_23_04.reg2_addr  = 0x3001; // R: 0x0130 - Set Exposure time LSByte - (31200 * us /1000) & 0xFF - Max: 600us, Max encoded: 0x4920.
         pkt->subcmd_21_23_04.reg2_val   = 0x4920 & 0xFF;
         assert(conf_packet->conf.register_conf.registers.regs[1].value == 0x20);
+        assert(((conf_packet->conf.register_conf.registers.regs[1].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[1].address.low) == IR_EXPOSURE_TIME_LSB_REG);
 
         pkt->subcmd_21_23_04.reg3_addr  = 0x3101; // R: 0x0131 - Set Exposure time MSByte - ((31200 * us /1000) & 0xFF00) >> 8
         pkt->subcmd_21_23_04.reg3_val   = (0x4920 & 0xFF00) >> 8;
         assert(conf_packet->conf.register_conf.registers.regs[2].value == 0x49);
+        assert(((conf_packet->conf.register_conf.registers.regs[2].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[2].address.low) == IR_EXPOSURE_TIME_MSB_REG);
 
         pkt->subcmd_21_23_04.reg4_addr  = 0x3201; // R: 0x0132 - Enable Max exposure Time - 0: Manual exposure, 1: Max exposure
         pkt->subcmd_21_23_04.reg4_val   = 0x00;
         assert(conf_packet->conf.register_conf.registers.regs[3].value == 0x0);
+        assert(((conf_packet->conf.register_conf.registers.regs[3].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[3].address.low) == IR_EXPOSURE_TIME_MAX_REG);
         
         pkt->subcmd_21_23_04.reg5_addr  = 0x1000; // R: 0x0010 - Set IR Leds groups state - Only 3 LSB usable
         pkt->subcmd_21_23_04.reg5_val   = 0b000000;
         assert(conf_packet->conf.register_conf.registers.regs[4].value == 0x0);
+        assert(((conf_packet->conf.register_conf.registers.regs[4].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[4].address.low) == IR_LED_GROUP_STATE_REG);
 
         pkt->subcmd_21_23_04.reg6_addr  = 0x2e01; // R: 0x012e - Set digital gain LSB 4 bits of the value - 0-0xff
         pkt->subcmd_21_23_04.reg6_val   = 0xFF;
         assert(conf_packet->conf.register_conf.registers.regs[5].value == 0xFF);
+        assert(((conf_packet->conf.register_conf.registers.regs[5].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[5].address.low) == IR_DIGITAL_GAIN_LSB_REG);
 
         pkt->subcmd_21_23_04.reg7_addr  = 0x2f01; // R: 0x012f - Set digital gain MSB 4 bits of the value - 0-0x7
         pkt->subcmd_21_23_04.reg7_val   = 0x07;
         assert(conf_packet->conf.register_conf.registers.regs[6].value == 0x07);
+        assert(((conf_packet->conf.register_conf.registers.regs[6].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[6].address.low) == IR_DIGITAL_GAIN_MSB_REG);
 
         pkt->subcmd_21_23_04.reg8_addr  = 0x0e00; // R: 0x00e0 - External light filter - LS o bit0: Off/On, bit1: 0x/1x, bit2: ??, bit4,5: ??.
         pkt->subcmd_21_23_04.reg8_val   = 0;
         assert(conf_packet->conf.register_conf.registers.regs[7].value == 0x0);
+        assert(((conf_packet->conf.register_conf.registers.regs[7].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[7].address.low) == IR_EX_LIGHT_FILTER_REG);
 
         pkt->subcmd_21_23_04.reg9_addr  = 0x4301; // R: 0x0143 - ExLF/White pixel stats threshold - 200: Default
         pkt->subcmd_21_23_04.reg9_val   = 0xc8;
         assert(conf_packet->conf.register_conf.registers.regs[8].value == 0xc8);
+        assert(((conf_packet->conf.register_conf.registers.regs[8].address.high << 8)
+            | conf_packet->conf.register_conf.registers.regs[8].address.low) == IR_WHITE_PIXEL_THRES_REG);
 
 
         memset(buf, 0, OUTPUT_REPORT_LEGNTH);
