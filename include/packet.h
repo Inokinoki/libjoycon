@@ -25,6 +25,8 @@ struct PacketMCUConf
     uint8_t crc;
 };
 
+void joycon_packet_mcu_read_status_encode(uint8_t *buf, uint8_t timer);
+
 void joycon_packet_mcu_enable(uint8_t *buf, uint8_t timer);
 void joycon_packet_mcu_disable(uint8_t *buf, uint8_t timer);
 

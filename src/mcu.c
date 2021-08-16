@@ -73,3 +73,13 @@ void joycon_packet_mcu_disable(uint8_t *buf, uint8_t timer)
     pkt->subcommand = SetMCUState;
     pkt->args.arg1 = MCU_SUSPEND;
 }
+
+void joycon_packet_mcu_read_status_encode(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = MCURead;
+    hdr->counter = timer;
+    pkt->subcommand = 0x01;
+}
