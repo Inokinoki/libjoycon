@@ -41,7 +41,10 @@ int main()
     joycon_packet_input_report_mode(buf, timer & 0xF, MCUIR);
     hid_write(handle, buf, sizeof(buf));
 
-    // TODO: Enable MCU
+    // Enable MCU
+    timer++;
+    joycon_packet_mcu_enable(buf, timer & 0xF);
+    hid_write(handle, buf, sizeof(buf));
 
     // TODO: Request MCU mode status
     // Not necessary, but we keep to make sure the MCU is ready.
@@ -60,7 +63,10 @@ int main()
 
     // TODO: Another function: Stream or Capture images from NIR Camera
 
-    // TODO: Disable MCU
+    // Disable MCU
+    timer++;
+    joycon_packet_mcu_disable(buf, timer & 0xF);
+    hid_write(handle, buf, sizeof(buf));
 
     // Set input report back to x3f
     timer++;

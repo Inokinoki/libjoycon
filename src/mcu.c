@@ -1,4 +1,5 @@
 #include <libjoycon.h>
+#include <string.h>
 
 // crc-8-ccitt / polynomial 0x07 look up table
 static uint8_t mcu_crc8_table[256] = {
@@ -49,4 +50,26 @@ struct MCUReg joycon_mcu_register_encode(uint16_t address, uint8_t value)
 uint16_t joycon_mcu_register_addr_decode(struct MCURegAddr address)
 {
     return (address.high << 8) | address.low;
+}
+
+void joycon_packet_mcu_enable(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = SetMCUState;
+    pkt->args.arg1 = MCU_RESUME;
+}
+
+void joycon_packet_mcu_disable(uint8_t *buf, uint8_t timer)
+{
+    memset(buf, 0, OUTPUT_REPORT_LEGNTH);
+    struct Header *hdr = (struct Header *)buf;
+    struct SubcommandBody *pkt = (struct SubcommandBody *)(hdr + 1);
+    hdr->command = Subcommand;
+    hdr->counter = timer;
+    pkt->subcommand = SetMCUState;
+    pkt->args.arg1 = MCU_SUSPEND;
 }

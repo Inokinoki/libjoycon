@@ -25,6 +25,9 @@ struct PacketMCUConf
     uint8_t crc;
 };
 
+void joycon_packet_mcu_enable(uint8_t *buf, uint8_t timer);
+void joycon_packet_mcu_disable(uint8_t *buf, uint8_t timer);
+
 void joycon_packet_mcu_conf_mode(uint8_t *buffer, uint8_t timer, uint8_t mode);
 void joycon_packet_mcu_conf_ir_mode(uint8_t *buffer, uint8_t timer, uint8_t mode, uint8_t number);
 void joycon_packet_mcu_conf_registers(uint8_t *buffer, uint8_t timer, uint8_t number,
