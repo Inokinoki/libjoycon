@@ -3,6 +3,7 @@
 
 #define OUTPUT_REPORT_LEGNTH 64
 #define INPUT_REPORT_STANDARD_LEGNTH 64
+#define INPUT_REPORT_MCUIR_LENGTH 0x170
 
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;

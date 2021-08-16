@@ -36,7 +36,36 @@ int main()
     con.handle = handle;
     fprintf(stderr, "Connected device\n");
 
-    // TODO: Impl
+    uint8_t buf_read[INPUT_REPORT_MCUIR_LENGTH];
+    // Set input report to x31
+    joycon_packet_input_report_mode(buf, timer & 0xF, MCUIR);
+    hid_write(handle, buf, sizeof(buf));
+
+    // TODO: Enable MCU
+
+    // TODO: Request MCU mode status
+    // Not necessary, but we keep to make sure the MCU is ready.
+
+    // TODO: Set MCU mode
+
+    // TODO: Request MCU mode status
+    // Not necessary, but we keep to make sure the MCU is ready.
+
+    // TODO: Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
+
+    // TODO: Request IR mode status
+    // Not necessary, but we keep to make sure the MCU is ready.
+
+    // TODO: Write to registers for the selected IR mode
+
+    // TODO: Another function: Stream or Capture images from NIR Camera
+
+    // TODO: Disable MCU
+
+    // Set input report back to x3f
+    timer++;
+    joycon_packet_input_report_mode(buf, timer & 0xF, ButtonTrigged);
+    hid_write(handle, buf, sizeof(buf));
 
     release_joycon(&con);
 
