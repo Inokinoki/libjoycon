@@ -47,7 +47,7 @@ enum IRResolution {
 #define IR_EXPOSURE_TIME_MSB_REG    0x0131      // Set Exposure time MSByte - ((31200 * us /1000) & 0xFF00) >> 8
 #define IR_EXPOSURE_TIME_MAX_REG    0x0132      // Enable Max exposure Time - 0: Manual exposure, 1: Max exposure
 
-#define IR_WHITE_PIXEL_THRES_REG    0x1043      // ExLF/White pixel stats threshold - Default: 200
+#define IR_WHITE_PIXEL_THRES_REG    0x0143      // ExLF/White pixel stats threshold - Default: 200
 
 #define IR_DENOISE_SMOOTH_ALGO_REG  0x1067      // Enable De-noise smoothing algorithms - 0: Disable, 1: Enable.
 #define IR_DENOISE_SMOOTH_THRES_REG 0x1068      // Edge smoothing threshold - Max 0xFF, Default 0x23
