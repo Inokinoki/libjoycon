@@ -1,6 +1,7 @@
 #include <mcu.h>
 #include <ir.h>
 #include <packet.h>
+#include <string.h>
 
 #include <stdio.h>
 
@@ -19,6 +20,67 @@ int device_right_connection(){
         return 0;
     }
     return handle_ok;
+}
+
+void get_raw_ir_image(uint8_t *image_buffer, uint16_t width, uint16_t height, uint8_t *timer)
+{
+    uint8_t buf[OUTPUT_REPORT_LEGNTH];
+    uint8_t buf_reply[INPUT_REPORT_MCUIR_LENGTH];
+
+    struct InputReportHeader *input_header = (struct InputReportHeader *)buf_reply;
+    struct InputReportIMUMCU *input_mcu_data = (struct InputReportIMUMCU *)(input_header + 1);
+
+    int initialization = 2;
+    int previous_frag_no = 0;
+    int got_frag_no = 0;
+    int missed_packet_no = 0;
+    int missed_packet = 0;
+
+    // Send first ACK
+    *timer++;
+    joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, 0);
+    hid_write(handle, buf, OUTPUT_REPORT_LEGNTH);
+
+    // IR Read/ACK loop for fragmented data packets. 
+    // It also avoids requesting missed data fragments, we just skip it to not complicate things.
+    while (initialization)
+    {
+        // Read a fragment
+        memset(buf_reply, 0, INPUT_REPORT_MCUIR_LENGTH);
+        hid_read_timeout(handle, buf_reply, INPUT_REPORT_MCUIR_LENGTH, 200);
+        if (input_header->id == MCUIR)
+        {
+            if (input_mcu_data->nfc_ir_data[0] == 0x03)
+            {
+                // TODO: Add normal routine
+            }
+            else
+            {
+                // Empty IR report. Send Ack again. Otherwise, it fallbacks to high latency mode (30ms per data fragment)
+                switch (input_mcu_data->nfc_ir_data[0])
+                {
+                case 0xFF:
+                    // Send ACK again
+                    *timer++;
+                    joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, previous_frag_no);
+                    hid_write(handle, buf, OUTPUT_REPORT_LEGNTH);
+                    break;
+                case 0x00:
+                    // Request missed frag
+                    *timer++;
+                    joycon_packet_mcu_read_req_encode(buf, *timer & 0x0F, previous_frag_no + 1);
+                    hid_write(handle, buf, OUTPUT_REPORT_LEGNTH);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        else
+        {
+            fprintf(stderr, "Input header [%X]\n", input_header->id);
+        }
+    }
 }
 
 int main()
@@ -119,7 +181,7 @@ int main()
     // Write to registers for the selected IR mode
     uint16_t addrs1[9], addrs2[8];
     uint8_t vals1[9], vals2[8];
-    addrs1[0] = IR_RESOLUTION_REG;          vals1[0] = 0;
+    addrs1[0] = IR_RESOLUTION_REG;          vals1[0] = IR_RESOLUTION_FULL;
     addrs1[1] = IR_EXPOSURE_TIME_LSB_REG;   vals1[1] = 0x4920 & 0xFF;
     addrs1[2] = IR_EXPOSURE_TIME_MSB_REG;   vals1[2] = (0x4920 & 0xFF00) >> 8;
     addrs1[3] = IR_EXPOSURE_TIME_MAX_REG;   vals1[3] = 0x00;
@@ -144,6 +206,9 @@ int main()
     hid_write(handle, buf, sizeof(buf));
 
     // TODO: Another function: Stream or Capture images from NIR Camera
+    uint16_t width = 320, height = 240;
+    uint8_t image_buffer[19 * 4096];
+    get_raw_ir_image(image_buffer, width, height, &timer);
 
 giveup:
     // Disable MCU
