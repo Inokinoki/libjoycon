@@ -52,6 +52,7 @@ int main()
     timer++;
     joycon_packet_mcu_read_status_encode(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
+    retries = 0;
     while (1) {
         int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
         if (buf[0] == 0x31) {
@@ -77,6 +78,7 @@ int main()
     timer++;
     joycon_packet_mcu_read_status_encode(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
+    retries = 0;
     while (1) {
         int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
         if (buf[0] == 0x31) {
