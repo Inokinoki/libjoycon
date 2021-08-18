@@ -275,5 +275,25 @@ int main()
         assert(((conf_packet->conf.register_conf.registers.regs[7].address.high << 8)
             | conf_packet->conf.register_conf.registers.regs[7].address.low) == IR_APPLY_REG);
     }
+
+    {
+        uint8_t buf[OUTPUT_REPORT_LEGNTH];
+        // Test status
+        memset(buf, 0, sizeof(buf));
+        auto hdr = (struct brcm_hdr *)buf;
+        auto pkt = (struct brcm_cmd_01 *)(hdr + 1);
+        hdr->cmd = 0x01;
+
+        pkt->subcmd = 0x21;
+        pkt->subcmd_21_23_01.mcu_cmd     = 0x23;
+        pkt->subcmd_21_23_01.mcu_subcmd  = 0x01; // Set IR mode cmd
+        pkt->subcmd_21_23_01.mcu_ir_mode = 0x07; // IR mode - 2: No mode/Disable?, 3: Moment, 4: Dpd (Wii-style pointing), 6: Clustering,
+                                                 // 7: Image transfer, 8-10: Hand analysis (Silhouette, Image, Silhouette/Image), 0,1/5/10+: Unknown
+        pkt->subcmd_21_23_01.no_of_frags = ir_max_frag_no; // Set number of packets to output per buffer
+        pkt->subcmd_21_23_01.mcu_major_v = 0x0500; // Set required IR MCU FW v5.18. Major 0x0005.
+        pkt->subcmd_21_23_01.mcu_minor_v = 0x1800; // Set required IR MCU FW v5.18. Minor 0x0018.
+
+        buf[48] = mcu_crc8_calc(buf + 12, 36);
+    }
     return 0;
 }
