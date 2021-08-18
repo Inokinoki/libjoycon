@@ -205,17 +205,20 @@ int main()
     retries = 0;
     while (1) {
         int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
-        if (buf[0] == 0x31) {
+        if (buf_read[0] == MCUIR) {
             //if (buf[49] == 0x01 && buf[56] == 0x06) // MCU state is Initializing
             // *(u16*)buf[52]LE x04 in lower than 3.89fw, x05 in 3.89
             // *(u16*)buf[54]LE x12 in lower than 3.89fw, x18 in 3.89
             // buf[56]: mcu mode state
-            if (buf[49] == 0x01 && buf[56] == MCUMode_STANDBY) // MCU state is Standby
+            if (buf_read[49] == 0x01 && buf_read[56] == MCUMode_STANDBY) // MCU state is Standby
                 break;
         }
         retries++;
         if (retries > 8 || res == 0)
+        {
+            fprintf(stderr, "Enable MCU failed after %d retries\n", retries);
             goto giveup;
+        }
     }
 
     // Set MCU mode
@@ -231,17 +234,20 @@ int main()
     retries = 0;
     while (1) {
         int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
-        if (buf[0] == 0x31) {
+        if (buf_read[0] == 0x31) {
             //if (buf[49] == 0x01 && buf[56] == 0x06) // MCU state is Initializing
             // *(u16*)buf[52]LE x04 in lower than 3.89fw, x05 in 3.89
             // *(u16*)buf[54]LE x12 in lower than 3.89fw, x18 in 3.89
             // buf[56]: mcu mode state
-            if (buf[49] == 0x01 && buf[56] == MCUMode_IR) // MCU state is Standby
+            if (buf_read[49] == 0x01 && buf_read[56] == MCUMode_IR) // MCU state is Standby
                 break;
         }
         retries++;
         if (retries > 8 || res == 0)
+        {
+            fprintf(stderr, "Set MCU mode failed after %d retries\n", retries);
             goto giveup;
+        }
     }
 
     // Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
@@ -257,13 +263,16 @@ int main()
     retries = 0;
     while (1) {
         int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
-        if (buf[0] == 0x31) {
-            if (buf[49] == 0x13 && buf[50] == 0x07) // MCU IR mode is capture
+        if (buf_read[0] == 0x31) {
+            if (buf_read[49] == 0x13 && buf_read[50] == 0x07) // MCU IR mode is capture
                 break;
         }
         retries++;
         if (retries > 8 || res == 0)
+        {
+            fprintf(stderr, "Set IR Mode failed\n");
             goto giveup;
+        }
     }
 
     // Write to registers for the selected IR mode
@@ -299,7 +308,14 @@ int main()
     get_raw_ir_image(image_buffer, width, height, &timer, IR_RESOLUTION_FULL_NUM_FRAG);
 
 giveup:
+    // Conf standby
+    fprintf(stderr, "Standby MCU\n");
+    timer++;
+    joycon_packet_mcu_conf_mode(buf, timer & 0xF, MCUMode_STANDBY);
+    hid_write(handle, buf, sizeof(buf));
+
     // Disable MCU
+    fprintf(stderr, "Disable MCU\n");
     timer++;
     joycon_packet_mcu_disable(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
