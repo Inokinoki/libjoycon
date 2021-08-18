@@ -68,7 +68,7 @@ int main()
             goto giveup;
     }
 
-    // TODO: debug Set MCU mode
+    // Set MCU mode
     timer++;
     joycon_packet_mcu_conf_mode(buf, timer & 0xF, MCUMode_IR);
     hid_write(handle, buf, sizeof(buf));
@@ -99,11 +99,22 @@ int main()
     joycon_packet_mcu_conf_ir_mode(buf, timer & 0xF, 0x07, IR_RESOLUTION_FULL_NUM_FRAG);
     hid_write(handle, buf, sizeof(buf));
 
-    // TODO: Request IR mode status
+    // Request IR mode status
     // Not necessary, but we keep to make sure the MCU is ready.
     timer++;
     joycon_packet_mcu_read_status_encode(buf, timer & 0xF);
     hid_write(handle, buf, sizeof(buf));
+    retries = 0;
+    while (1) {
+        int res = hid_read_timeout(handle, buf_read, sizeof(buf_read), 200);
+        if (buf[0] == 0x31) {
+            if (buf[49] == 0x13 && buf[50] == 0x07) // MCU IR mode is capture
+                break;
+        }
+        retries++;
+        if (retries > 8 || res == 0)
+            goto giveup;
+    }
 
     // Write to registers for the selected IR mode
     uint16_t addrs1[9], addrs2[8];
