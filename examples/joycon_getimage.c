@@ -22,7 +22,7 @@ int device_right_connection(){
     return handle_ok;
 }
 
-void get_raw_ir_image(uint8_t *image_buffer, uint16_t width, uint16_t height, uint8_t *timer)
+void get_raw_ir_image(uint8_t *buf_image, uint16_t width, uint16_t height, uint8_t *timer, uint8_t ir_max_frag_no)
 {
     uint8_t buf[OUTPUT_REPORT_LEGNTH];
     uint8_t buf_reply[INPUT_REPORT_MCUIR_LENGTH];
@@ -52,7 +52,93 @@ void get_raw_ir_image(uint8_t *image_buffer, uint16_t width, uint16_t height, ui
         {
             if (input_mcu_data->nfc_ir_data[0] == 0x03)
             {
-                // TODO: Add normal routine
+                // Add normal routine
+                got_frag_no = input_mcu_data->nfc_ir_data[3];
+                if (got_frag_no == (previous_frag_no + 1) % (ir_max_frag_no + 1))
+                {
+                    // Get the frag
+                    previous_frag_no = got_frag_no;
+
+                    if (got_frag_no == ir_max_frag_no)
+                    {
+                        // The last frame
+                        // TODO: Get noise level, white pixel percentage, average_intensity_percentage
+                        if (initialization) initialization--;
+                    }
+                }
+                // Repeat/Missed fragment
+                else if (got_frag_no  || previous_frag_no)
+                {
+                    if (got_frag_no == previous_frag_no)
+                    {
+                        // ACK for fragment
+                        *timer++;
+                        joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, got_frag_no);
+                        hid_write(handle, buf, sizeof(buf));
+
+                        missed_packet = 0;
+                    }
+                    else if (missed_packet_no != got_frag_no && !missed_packet)
+                    {
+                        // Check if missed fragment and res is 30x40. Don't request it
+                        if (ir_max_frag_no != 0x03)
+                        {
+                            // Request for missed packet. You send what the next fragment number will be, instead of the actual missed packet.
+                            *timer++;
+                            joycon_packet_mcu_read_req_encode(buf, *timer & 0x0F, previous_frag_no + 1);
+                            hid_write(handle, buf, OUTPUT_REPORT_LEGNTH);
+
+                            memcpy(buf_image + (300 * got_frag_no), buf_reply + 59, 300);
+
+                            previous_frag_no = got_frag_no;
+                            missed_packet_no = got_frag_no - 1;
+                            missed_packet = 1;
+                        }
+                        else
+                        {
+                            // ACK for fragment
+                            *timer++;
+                            joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, got_frag_no);
+                            hid_write(handle, buf, sizeof(buf));
+                            memcpy(buf_image + (300 * got_frag_no), buf_reply + 59, 300);
+
+                            previous_frag_no = got_frag_no;
+                        }
+                        
+                    }
+                    // Got the requested missed fragments.
+                    else if (missed_packet_no == got_frag_no)
+                    {
+                        // ACK for fragment
+                        *timer++;
+                        joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, got_frag_no);
+                        hid_write(handle, buf, sizeof(buf));
+
+                        memcpy(buf_image + (300 * got_frag_no), buf_reply + 59, 300);
+
+                        previous_frag_no = got_frag_no;
+                        missed_packet = 0;
+                    }
+                    // Repeat of fragment that is not max fragment.
+                    else
+                    {
+                        // ACK for fragment
+                        *timer++;
+                        joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, got_frag_no);
+                        hid_write(handle, buf, sizeof(buf));
+                    }
+                    fprintf(stderr, "Loading image: %d\%\n", got_frag_no * 100 / (ir_max_frag_no + 1));
+                }
+                // Streaming start
+                else {
+                    // ACK for fragment
+                    *timer++;
+                    joycon_packet_mcu_read_ack_encode(buf, *timer & 0x0F, got_frag_no);
+                    hid_write(handle, buf, OUTPUT_REPORT_LEGNTH);
+                    memcpy(buf_image + (300 * got_frag_no), buf_reply + 59, 300);
+
+                    previous_frag_no = 0;
+                }
             }
             else
             {
@@ -81,6 +167,8 @@ void get_raw_ir_image(uint8_t *image_buffer, uint16_t width, uint16_t height, ui
             fprintf(stderr, "Input header [%X]\n", input_header->id);
         }
     }
+
+    fprintf(stderr, "Read IR Image finished\n");
 }
 
 int main()
@@ -205,10 +293,10 @@ int main()
     joycon_packet_mcu_conf_registers(buf, timer & 0xF, 8, addrs2, vals2);
     hid_write(handle, buf, sizeof(buf));
 
-    // TODO: Another function: Stream or Capture images from NIR Camera
+    // TODO: Debug Another function: Stream or Capture images from NIR Camera
     uint16_t width = 320, height = 240;
     uint8_t image_buffer[19 * 4096];
-    get_raw_ir_image(image_buffer, width, height, &timer);
+    get_raw_ir_image(image_buffer, width, height, &timer, IR_RESOLUTION_FULL_NUM_FRAG);
 
 giveup:
     // Disable MCU
