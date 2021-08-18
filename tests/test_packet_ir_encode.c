@@ -280,8 +280,9 @@ int main()
         uint8_t buf[OUTPUT_REPORT_LEGNTH];
         // Test status
         memset(buf, 0, sizeof(buf));
-        auto hdr = (struct brcm_hdr *)buf;
-        auto pkt = (struct brcm_cmd_01 *)(hdr + 1);
+        struct brcm_hdr *hdr = (struct brcm_hdr *)buf;
+        struct brcm_cmd_01 *pkt = (struct brcm_cmd_01 *)(hdr + 1);
+        struct PacketMCUConf *conf_packet = (struct PacketMCUConf *)buf;
         hdr->cmd = 0x01;
 
         pkt->subcmd = 0x21;
@@ -289,11 +290,37 @@ int main()
         pkt->subcmd_21_23_01.mcu_subcmd  = 0x01; // Set IR mode cmd
         pkt->subcmd_21_23_01.mcu_ir_mode = 0x07; // IR mode - 2: No mode/Disable?, 3: Moment, 4: Dpd (Wii-style pointing), 6: Clustering,
                                                  // 7: Image transfer, 8-10: Hand analysis (Silhouette, Image, Silhouette/Image), 0,1/5/10+: Unknown
-        pkt->subcmd_21_23_01.no_of_frags = ir_max_frag_no; // Set number of packets to output per buffer
+        pkt->subcmd_21_23_01.no_of_frags = 0xFF; // Set number of packets to output per buffer
         pkt->subcmd_21_23_01.mcu_major_v = 0x0500; // Set required IR MCU FW v5.18. Major 0x0005.
         pkt->subcmd_21_23_01.mcu_minor_v = 0x1800; // Set required IR MCU FW v5.18. Minor 0x0018.
 
-        buf[48] = mcu_crc8_calc(buf + 12, 36);
+        assert(conf_packet->header.command == 0x01);
+        assert(conf_packet->subcommand = 0x21);
+        assert(conf_packet->conf.command.command == 0x23);
+        assert(conf_packet->conf.command.subcommand == 0x01);
+        assert(conf_packet->conf.ir_conf.ir_mode.number == 0xFF);
+        assert(((conf_packet->conf.ir_conf.ir_mode.major_version.high << 8)
+            | conf_packet->conf.ir_conf.ir_mode.major_version.low) == 0x0005);
+        assert(((conf_packet->conf.ir_conf.ir_mode.minor_version.high << 8)
+            | conf_packet->conf.ir_conf.ir_mode.minor_version.low) == 0x0018);
+    }
+    {
+        uint8_t buf[OUTPUT_REPORT_LEGNTH];
+        joycon_packet_mcu_conf_ir_mode(buf, 0x0, 0x07, IR_RESOLUTION_FULL_NUM_FRAG);
+        struct PacketMCUConf *conf_packet = (struct PacketMCUConf *)buf;
+
+        assert(conf_packet->header.command == 0x01);
+        assert(conf_packet->subcommand = 0x21);
+        assert(conf_packet->conf.command.command == 0x23);
+        assert(conf_packet->conf.command.subcommand == 0x01);
+
+        assert(conf_packet->conf.ir_conf.ir_mode.mode == 0x07);
+        assert(conf_packet->conf.ir_conf.ir_mode.number == IR_RESOLUTION_FULL_NUM_FRAG);
+
+        assert(((conf_packet->conf.ir_conf.ir_mode.major_version.high << 8)
+            | conf_packet->conf.ir_conf.ir_mode.major_version.low) == 0x0005);
+        assert(((conf_packet->conf.ir_conf.ir_mode.minor_version.high << 8)
+            | conf_packet->conf.ir_conf.ir_mode.minor_version.low) == 0x0018);
     }
     return 0;
 }

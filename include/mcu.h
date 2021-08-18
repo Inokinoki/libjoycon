@@ -14,8 +14,8 @@ struct MCUCommand {
 };
 
 struct MCUIRVersion {
-    uint8_t low;
     uint8_t high;
+    uint8_t low;
 };
 
 struct MCUIRMode {

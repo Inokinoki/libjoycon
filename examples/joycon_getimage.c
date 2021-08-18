@@ -94,7 +94,7 @@ int main()
             goto giveup;
     }
 
-    // TODO: debug Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
+    // Set IR mode and number of packets for each data blob. Blob size is packets * 300 bytes.
     timer++;
     joycon_packet_mcu_conf_ir_mode(buf, timer & 0xF, 0x07, IR_RESOLUTION_FULL_NUM_FRAG);
     hid_write(handle, buf, sizeof(buf));
