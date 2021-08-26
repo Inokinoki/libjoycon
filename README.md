@@ -1,4 +1,4 @@
-# libjoycon
+# libjoycon [![CMake](https://github.com/Inokinoki/libjoycon/actions/workflows/cmake.yml/badge.svg)](https://github.com/Inokinoki/libjoycon/actions/workflows/cmake.yml)
 
 A Joycon packet encoding and decoding lib
 
