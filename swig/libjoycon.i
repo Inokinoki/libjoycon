@@ -37,6 +37,15 @@ extern void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer);
 extern void joycon_packet_imu_disable(uint8_t *buf, uint8_t timer);
 
 extern void joycon_packet_input_report_mode(uint8_t *buf, uint8_t timer, uint8_t mode);
+
+enum IMUSensitivity {
+    Sensitivity0 = 0x00,
+    Sensitivity1,
+    Sensitivity2,
+    Sensitivity3
+};
+extern float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity);
+extern float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity);
 %}
 
 extern void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index);
@@ -75,3 +84,12 @@ extern void joycon_packet_imu_enable(uint8_t *buf, uint8_t timer);
 extern void joycon_packet_imu_disable(uint8_t *buf, uint8_t timer);
 
 extern void joycon_packet_input_report_mode(uint8_t *buf, uint8_t timer, uint8_t mode);
+
+enum IMUSensitivity {
+    Sensitivity0 = 0x00,
+    Sensitivity1,
+    Sensitivity2,
+    Sensitivity3
+};
+extern float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity);
+extern float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity);
