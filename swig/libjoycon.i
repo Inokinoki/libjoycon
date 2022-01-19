@@ -1,6 +1,9 @@
 /* libjoycon.i */
 %module libjoycon
 %{
+uint8_t *joycon_allocate_buffer(size_t size);
+void joycon_free_buffer(uint8_t *buf);
+
 extern void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index);
 extern void joycon_packet_mcu_read_req_encode(uint8_t *buffer, uint8_t timer, uint8_t index);
 
@@ -46,6 +49,20 @@ enum IMUSensitivity {
 };
 extern float joycon_gyro_decode(int16_t data, enum IMUSensitivity sensitivity);
 extern float joycon_accel_decode(int16_t data, enum IMUSensitivity sensitivity);
+%}
+
+%include "stdint.i"
+%include "carrays.i"
+%array_functions(uint8_t,byteArray)
+
+%inline %{
+    uint8_t *joycon_allocate_buffer(size_t size)
+    {
+        uint8_t *buf = malloc(size);
+        memset(buf, 0, size);
+        return buf;
+    }
+    void joycon_free_buffer(uint8_t *buf) { free(buf); }
 %}
 
 extern void joycon_packet_mcu_read_ack_encode(uint8_t *buffer, uint8_t timer, uint8_t index);
