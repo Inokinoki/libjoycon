@@ -2,6 +2,9 @@ import hid
 import libjoycon
 import taichi as ti
 
+# Use another thread for painting
+import _thread
+
 ti.init(arch=ti.cpu)
 
 n = 320
@@ -41,6 +44,26 @@ def buf2list(buf, size):
         l[i] = libjoycon.byteArray_getitem(buf, i)
     return l
 
+angle_x = 0.0
+def thread_read(count):
+    global angle_x
+    counter = 0
+    while counter < count:
+        # Read
+        resp = h.read(64)
+        if resp[0] == 48:
+            # Decode the frame
+            for i in range(3):
+                # print(int.from_bytes(resp[13 + 12 * i + 6: 13 + 12 * i + 6 + 2], byteorder='little', signed=True))
+                decoded_gyro_x = 0.005 * joycon_gyro_decode(
+                    int.from_bytes(resp[13 + 12 * i + 6: 13 + 12 * i + 6 + 2], byteorder='little', signed=True), 0.07)
+                angle_x = angle_x + decoded_gyro_x
+
+            # print(angle_x)
+            counter += 1
+        else:
+            print("Received another frame")
+
 try:
     print("Opening the device")
 
@@ -59,25 +82,13 @@ try:
 
     # Mainloop
     counter = 0
-    angle_x = 0.0
-    while counter < 20 * 10:
-        # Read
-        resp = h.read(64)
-        if resp[0] == 48:
-            # Decode the frame
-            for i in range(3):
-                # print(int.from_bytes(resp[13 + 12 * i + 6: 13 + 12 * i + 6 + 2], byteorder='little', signed=True))
-                decoded_gyro_x = 0.005 * joycon_gyro_decode(
-                    int.from_bytes(resp[13 + 12 * i + 6: 13 + 12 * i + 6 + 2], byteorder='little', signed=True), 0.07)
-                angle_x = angle_x + decoded_gyro_x
-
-            # print(angle_x)
-            paint(angle_x / 60 * 100 * 0.03)
-            gui.set_image(pixels)
-            gui.show()
-            counter += 1
-        else:
-            print("Received another frame")
+    count = 600 * 10
+    thread = _thread.start_new_thread(thread_read, (count, ))
+    while counter < count:
+        paint(angle_x * 0.03)
+        gui.set_image(pixels)
+        gui.show()
+        counter += 1
 
     # Disable IMU
     libjoycon.joycon_packet_imu_disable(buf, timer & 0xF)
