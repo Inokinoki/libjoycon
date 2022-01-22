@@ -1,17 +1,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdint.h>
+
 #define OUTPUT_REPORT_LEGNTH 64
 #define INPUT_REPORT_STANDARD_LEGNTH 64
 #define INPUT_REPORT_MCUIR_LENGTH 0x170
-
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-
-typedef char int8_t;
-typedef short int16_t;
-typedef int int32_t;
 
 #pragma pack(push, 1)
 struct SubcommandBodySPIData {
