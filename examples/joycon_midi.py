@@ -16,16 +16,19 @@ mid = MidiFile('twinkle-twinkle-little-star.mid', clip=True)
 
 print(len(mid.tracks), mid.length, mid.ticks_per_beat, mid.type)
 max_passed_time = 0.0
+
+# Init tempo
+tempo = 500000
 for i, track in enumerate(mid.tracks):
     print('Track {}: {}'.format(i, track.name))
     print(len(track))
 
-    # Init tempo
-    tempo = 500000
     begin_time = time.time() * 1000.0
     passed_time = 0.0
     is_main_track = False
     for msg in track:
+        if msg.type == "end_of_track":
+            break
         if msg.time != 0:
             sleep_time = tick2second(tick=msg.time, ticks_per_beat=mid.ticks_per_beat, tempo=tempo)
             print("Sleeping {} at {}".format(sleep_time, passed_time))
