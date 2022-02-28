@@ -1,5 +1,17 @@
 from mido import MidiFile, tick2second, tempo2bpm
 import time
+import ctypes
+
+import hid
+import libjoycon
+
+buffer_len = 64
+
+def buf2list(buf, size):
+    l = [0] * size
+    for i in range(size):
+        l[i] = libjoycon.byteArray_getitem(buf, i)
+    return l
 
 class JoyconNoteOutput:
     FREQ_OFFSET = 36
@@ -12,22 +24,85 @@ class JoyconNoteOutput:
         # C6 is 84
     ]
 
-    def __init__(self):
+    def __init__(self, device_id):
+        self._timer = 0
         self._is_busy = False
+        self._device_id = device_id
+        self._buf = None
+
+        buf = libjoycon.joycon_allocate_buffer(buffer_len)
+
+        # Init handler
+        try:
+            print(f"Opening the device {device_id}")
+
+            h = hid.device()
+            h.open(0x57e, device_id, None)
+            print("Open device")
+
+            libjoycon.joycon_packet_rumble_enable_only(buf, self._timer & 0xF)
+            h.write(buf2list(buf, buffer_len))
+
+            # enable non-blocking mode
+            h.set_nonblocking(1)
+
+            self._handler = h
+            self._buf = buf
+        except IOError as ex:
+            self._handler = None
+            libjoycon.joycon_free_buffer(buf)
 
     def is_busy(self):
         return self._is_busy
+    
+    def is_connected(self):
+        return self._handler is not None
 
     def note_off(self, note):
+        if self._buf:
+            try:
+                self._timer += 1
+                libjoycon.joycon_packet_rumble_only(self._buf, self._timer & 0xF, 0, 0)
+                self._handler.write(buf2list(self._buf, buffer_len))
+            except IOError as ex:
+                print(ex)
         self._is_busy = False
         print(f"\tNote off {note}")
 
     def note_on(self, note, amp=0.5):
+        if self._buf and (note - JoyconNoteOutput.FREQ_OFFSET) < len(JoyconNoteOutput.freqs):
+            try:
+                self._timer += 1
+                libjoycon.joycon_packet_rumble_only(self._buf, self._timer & 0xF,\
+                    JoyconNoteOutput.freqs[note - JoyconNoteOutput.FREQ_OFFSET], amp)
+                self._handler.write(buf2list(self._buf, buffer_len))
+            except IOError as ex:
+                print(ex)
         self._is_busy = True
         print(f"\tNote on {note}")
+    
+    def __del__(self):
+        if self._handler is not None:
+            try:
+                self._timer += 1
+                buf = self._buf
+                libjoycon.joycon_packet_rumble_disable(buf, self._timer & 0xF, 0, 0)
+                self._handler.write(buf2list(buf, buffer_len))
 
-# TODO: Add multiple joycon connections
+                print("Closing the device")
+                self._handler.close()
+                self._handler = None
+            except IOError as ex:
+                pass
+            finally:
+                libjoycon.joycon_free_buffer(self._buf)
+
+# Add multiple joycon connections
 controllers = []
+for i in [0x2006, 0x2007]:
+    c = JoyconNoteOutput(i)
+    if c.is_connected():
+        controllers.append(c)
 
 mid = MidiFile('twinkle-twinkle-little-star.mid', clip=True)
 
