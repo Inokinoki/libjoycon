@@ -99,7 +99,7 @@ class JoyconNoteOutput:
 
 # Add multiple joycon connections
 controllers = []
-for i in [0x2006, 0x2007]:
+for i in [0x2009, 0x2006, 0x2007]:
     c = JoyconNoteOutput(i)
     if c.is_connected():
         controllers.append(c)
