@@ -62,7 +62,8 @@ class JoyconNoteOutput:
         if self._buf:
             try:
                 self._timer += 1
-                libjoycon.joycon_packet_rumble_only(self._buf, self._timer & 0xF, 0, 0)
+                libjoycon.joycon_packet_rumble_only(self._buf, self._timer & 0xF,\
+                    JoyconNoteOutput.freqs[note - JoyconNoteOutput.FREQ_OFFSET], 0)
                 self._handler.write(buf2list(self._buf, buffer_len))
             except IOError as ex:
                 print(ex)
