@@ -1,9 +1,16 @@
-from mido import MidiFile, tick2second, tempo2bpm, open_input
+from mido import MidiFile, tick2second, tempo2bpm, open_input, get_input_names
 import time
 import ctypes
 
 import hid
 import libjoycon
+
+available_inputs=get_input_names()
+print("Found the following MIDI devices:\n", '\n'.join(available_inputs))
+
+input_name = available_inputs[1]
+print("\nUsing {}".format(input_name))
+inport = open_input(input_name)
 
 buffer_len = 64
 
@@ -49,6 +56,7 @@ class JoyconNoteOutput:
             self._handler = h
             self._buf = buf
         except IOError as ex:
+            print(ex)
             self._handler = None
             libjoycon.joycon_free_buffer(buf)
 
@@ -106,8 +114,6 @@ for i in [0x2009, 0x2006, 0x2007]:
         controllers.append(c)
 
 notes_mapping = {}  # Map a note_on to a joycon
-
-inport = open_input('Alesis Recital:Alesis Recital MIDI 1 20:0')
 
 # Init tempo
 tempo = 500000

@@ -18,6 +18,10 @@ If you want to build examples, the HIDAPI lib is a must. The OpenGL and GLUT/Vul
 cmake -DBUILD_EXAMPLE=ON ..
 ```
 
+### Python bindings
+
+If `swig` is installed, bindings for python will also be built.
+
 ## Usage
 
 Please refer the programs in `examples`.
@@ -31,3 +35,4 @@ Note that this library does not contain Bluetooth/USB HID implementation, you ca
 What can it do? Check this twitter:
 
 [IIInoki - Map Joycon to a cube](https://twitter.com/IIInoki/status/1416239484711079938)
+[IIInoki - Midi to Joycon rumble](https://mobile.twitter.com/IIInoki/status/1502913550607699969)
