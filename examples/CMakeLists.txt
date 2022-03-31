@@ -6,6 +6,12 @@ if(PkgConfig_FOUND)
     pkg_check_modules(GLUT glut)
 endif()
 
+if(SWIG_FOUND)
+# Copy Python examples anyway
+file(GLOB PYTHON_EXAMPLES "*.py")
+file(COPY ${PYTHON_EXAMPLES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
+endif()
+
 if(HIDAPI_FOUND)
     # Add HIDAPI
     add_executable(joycon_helloworld joycon_helloworld.c)
