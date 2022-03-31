@@ -49,6 +49,7 @@ class JoyconNoteOutput:
             self._handler = h
             self._buf = buf
         except IOError as ex:
+            print(ex)
             self._handler = None
             libjoycon.joycon_free_buffer(buf)
 
