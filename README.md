@@ -22,6 +22,13 @@ cmake -DBUILD_EXAMPLE=ON ..
 
 If `swig` is installed, bindings for python will also be built.
 
+To use the Python examples, install `hidapi`(also and `taichi` to run the taichi example) in pip. In Linux, remember to build the `hidapi` manually in order to connect to Joycon through Linux hidraw API:
+
+```
+git clone --recursive https://github.com/trezor/cython-hidapi.git
+python setup.py build --without-libusb
+```
+
 ## Usage
 
 Please refer the programs in `examples`.
@@ -30,9 +37,15 @@ Please refer the programs in `examples`.
 
 Note that this library does not contain Bluetooth/USB HID implementation, you can use one on a specific platform, e.g. hidapi on Linux/Win, to read/send raw packets, and use this library to extract/encode information from/to the packets.
 
-## Have fun
+## Having fun
 
-What can it do? Check this twitter:
+What can it do? Check these tweets:
 
 [IIInoki - Map Joycon to a cube](https://twitter.com/IIInoki/status/1416239484711079938)
+
 [IIInoki - Midi to Joycon rumble](https://mobile.twitter.com/IIInoki/status/1502913550607699969)
+
+## Credits
+
+- [Joycon reverse engineering](https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering) by dekuNukem
+- Joy-Con/Joycon is a trademark of Nintendo

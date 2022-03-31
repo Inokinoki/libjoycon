@@ -7,9 +7,9 @@ if(PkgConfig_FOUND)
 endif()
 
 if(SWIG_FOUND)
-# Copy Python examples anyway
-file(GLOB PYTHON_EXAMPLES "*.py")
-file(COPY ${PYTHON_EXAMPLES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
+    # Copy Python examples anyway
+    file(GLOB PYTHON_EXAMPLES "*.py")
+    file(COPY ${PYTHON_EXAMPLES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../)
 endif()
 
 if(HIDAPI_FOUND)
