@@ -5,12 +5,27 @@ import ctypes
 import hid
 import libjoycon
 
-available_inputs=get_input_names()
-print("Found the following MIDI devices:\n", '\n'.join(available_inputs))
+# Open a MIDI device
+available_inputs = get_input_names()
+print("Found the following MIDI devices:")
+for (i, n) in zip(range(len(available_inputs)), available_inputs):
+    print(f"\t[{i + 1}] {n}")
+inport = None
+try:
+    choice = input("Choose a device by the number:")
+    choice = int(choice) - 1
+    if choice < 0 or choice >= len(available_inputs):
+        raise RuntimeError("Device index out-of-range")
+    input_name = available_inputs[choice]
+    print("\nUsing {}".format(input_name))
+    inport = open_input(input_name)
+except Exception as e:
+    print(e)
+    exit(1)
 
-input_name = available_inputs[1]
-print("\nUsing {}".format(input_name))
-inport = open_input(input_name)
+if inport is None:
+    print("No connected input device")
+    exit(1)
 
 buffer_len = 64
 
